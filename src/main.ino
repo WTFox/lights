@@ -1,10 +1,9 @@
 #include "../lib/FastLED/src/FastLED.h"
 FASTLED_USING_NAMESPACE;
 
+#define PARTICLE_NO_ARDUINO_COMPATIBILITY 1
 #include "Particle.h"
 #define FL_PROGMEM
-
-FASTLED_USING_NAMESPACE
 
 #define NUM_LEDS 95
 #define DATA_PIN D5

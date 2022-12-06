@@ -1,37 +1,30 @@
 #ifndef __INC_COLORUTILS_H
 #define __INC_COLORUTILS_H
 
-///@file colorutils.h
-/// functions for color fill, paletters, blending, and more
+#ifdef ARDUINO
+#include <avr/pgmspace.h>
+#endif
 
-#include "FastLED.h"
 #include "pixeltypes.h"
-#include "fastled_progmem.h"
 
 FASTLED_NAMESPACE_BEGIN
-///@defgroup Colorutils Color utility functions
-///A variety of functions for working with color, palletes, and leds
-///@{
 
-/// fill_solid -   fill a range of LEDs with a solid color
-///                Example: fill_solid( leds, NUM_LEDS, CRGB(50,0,200));
+// fill_solid -   fill a range of LEDs with a solid color
+//                Example: fill_solid( leds, NUM_LEDS, CRGB(50,0,200));
+
 void fill_solid( struct CRGB * leds, int numToFill,
                  const struct CRGB& color);
 
-/// fill_solid -   fill a range of LEDs with a solid color
-///                Example: fill_solid( leds, NUM_LEDS, CRGB(50,0,200));
 void fill_solid( struct CHSV* targetArray, int numToFill,
 				 const struct CHSV& hsvColor);
 
 
-/// fill_rainbow - fill a range of LEDs with a rainbow of colors, at
-///                full saturation and full value (brightness)
+// fill_rainbow - fill a range of LEDs with a rainbow of colors, at
+//                full saturation and full value (brightness)
 void fill_rainbow( struct CRGB * pFirstLED, int numToFill,
                    uint8_t initialhue,
                    uint8_t deltahue = 5);
 
-/// fill_rainbow - fill a range of LEDs with a rainbow of colors, at
-///                full saturation and full value (brightness)
 void fill_rainbow( struct CHSV * targetArray, int numToFill,
                    uint8_t initialhue,
                    uint8_t deltahue = 5);
@@ -168,7 +161,7 @@ void fill_gradient( T* targetArray,
     accum88 hue88 = startcolor.hue << 8;
     accum88 sat88 = startcolor.sat << 8;
     accum88 val88 = startcolor.val << 8;
-    for( uint16_t i = startpos; i <= endpos; ++i) {
+    for( uint16_t i = startpos; i <= endpos; i++) {
         targetArray[i] = CHSV( hue88 >> 8, sat88 >> 8, val88 >> 8);
         hue88 += huedelta87;
         sat88 += satdelta87;
@@ -392,17 +385,12 @@ CRGB HeatColor( uint8_t temperature);
 //
 
 class CRGBPalette16;
-class CRGBPalette32;
 class CRGBPalette256;
 class CHSVPalette16;
-class CHSVPalette32;
 class CHSVPalette256;
 typedef uint32_t TProgmemRGBPalette16[16];
 typedef uint32_t TProgmemHSVPalette16[16];
 #define TProgmemPalette16 TProgmemRGBPalette16
-typedef uint32_t TProgmemRGBPalette32[32];
-typedef uint32_t TProgmemHSVPalette32[32];
-#define TProgmemPalette32 TProgmemRGBPalette32
 
 typedef const uint8_t TProgmemRGBGradientPalette_byte ;
 typedef const TProgmemRGBGradientPalette_byte *TProgmemRGBGradientPalette_bytes;
@@ -422,17 +410,10 @@ typedef uint8_t TDynamicRGBGradientPalette_byte ;
 typedef const TDynamicRGBGradientPalette_byte *TDynamicRGBGradientPalette_bytes;
 typedef TDynamicRGBGradientPalette_bytes TDynamicRGBGradientPalettePtr;
 
+
 // Convert a 16-entry palette to a 256-entry palette
 void UpscalePalette(const struct CRGBPalette16& srcpal16, struct CRGBPalette256& destpal256);
 void UpscalePalette(const struct CHSVPalette16& srcpal16, struct CHSVPalette256& destpal256);
-
-// Convert a 16-entry palette to a 32-entry palette
-void UpscalePalette(const struct CRGBPalette16& srcpal16, struct CRGBPalette32& destpal32);
-void UpscalePalette(const struct CHSVPalette16& srcpal16, struct CHSVPalette32& destpal32);
-
-// Convert a 32-entry palette to a 256-entry palette
-void UpscalePalette(const struct CRGBPalette32& srcpal32, struct CRGBPalette256& destpal256);
-void UpscalePalette(const struct CHSVPalette32& srcpal32, struct CHSVPalette256& destpal256);
 
 
 class CHSVPalette16 {
@@ -452,18 +433,18 @@ public:
 
     CHSVPalette16( const CHSVPalette16& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
     }
     CHSVPalette16& operator=( const CHSVPalette16& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
         return *this;
     }
 
     CHSVPalette16( const TProgmemHSVPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
-            CRGB xyz   =  FL_PGM_READ_DWORD_NEAR( rhs + i);
+        for( uint8_t i = 0; i < 16; i++) {
+            CRGB xyz   =  pgm_read_dword_near( rhs + i);
             entries[i].hue = xyz.red;
             entries[i].sat = xyz.green;
             entries[i].val = xyz.blue;
@@ -471,8 +452,8 @@ public:
     }
     CHSVPalette16& operator=( const TProgmemHSVPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
-            CRGB xyz   =  FL_PGM_READ_DWORD_NEAR( rhs + i);
+        for( uint8_t i = 0; i < 16; i++) {
+            CRGB xyz   =  pgm_read_dword_near( rhs + i);
             entries[i].hue = xyz.red;
             entries[i].sat = xyz.green;
             entries[i].val = xyz.blue;
@@ -503,23 +484,6 @@ public:
         return &(entries[0]);
     }
 
-    bool operator==( const CHSVPalette16 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint8_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CHSVPalette16 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
     CHSVPalette16( const CHSV& c1)
     {
         fill_solid( &(entries[0]), 16, c1);
@@ -555,11 +519,11 @@ public:
 
     CHSVPalette256( const CHSVPalette256& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
     }
     CHSVPalette256& operator=( const CHSVPalette256& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
         return *this;
     }
 
@@ -608,23 +572,6 @@ public:
         return &(entries[0]);
     }
 
-    bool operator==( const CHSVPalette256 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint16_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CHSVPalette256 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
     CHSVPalette256( const CHSV& c1)
     {
       fill_solid( &(entries[0]), 256, c1);
@@ -660,81 +607,42 @@ public:
 
     CRGBPalette16( const CRGBPalette16& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-    }
-    CRGBPalette16( const CRGB rhs[16])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
     }
     CRGBPalette16& operator=( const CRGBPalette16& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-        return *this;
-    }
-    CRGBPalette16& operator=( const CRGB rhs[16])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
         return *this;
     }
 
     CRGBPalette16( const CHSVPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
+        for( uint8_t i = 0; i < 16; i++) {
     		entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
-        }
-    }
-    CRGBPalette16( const CHSV rhs[16])
-    {
-        for( uint8_t i = 0; i < 16; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
         }
     }
     CRGBPalette16& operator=( const CHSVPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
+        for( uint8_t i = 0; i < 16; i++) {
     		entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
-        }
-        return *this;
-    }
-    CRGBPalette16& operator=( const CHSV rhs[16])
-    {
-        for( uint8_t i = 0; i < 16; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
         }
         return *this;
     }
 
     CRGBPalette16( const TProgmemRGBPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
-            entries[i] =  FL_PGM_READ_DWORD_NEAR( rhs + i);
+        for( uint8_t i = 0; i < 16; i++) {
+            entries[i] =  pgm_read_dword_near( rhs + i);
         }
     }
     CRGBPalette16& operator=( const TProgmemRGBPalette16& rhs)
     {
-        for( uint8_t i = 0; i < 16; ++i) {
-            entries[i] =  FL_PGM_READ_DWORD_NEAR( rhs + i);
+        for( uint8_t i = 0; i < 16; i++) {
+            entries[i] =  pgm_read_dword_near( rhs + i);
         }
         return *this;
     }
 
-    bool operator==( const CRGBPalette16 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint8_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CRGBPalette16 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
     inline CRGB& operator[] (uint8_t x) __attribute__((always_inline))
     {
         return entries[x];
@@ -825,23 +733,23 @@ public:
         TRGBGradientPaletteEntryUnion u;
 
         // Count entries
-        uint16_t count = 0;
+        uint8_t count = 0;
         do {
-            u.dword = FL_PGM_READ_DWORD_NEAR(progent + count);
-            ++count;
+            u.dword = pgm_read_dword_near(progent + count);
+            count++;;
         } while ( u.index != 255);
 
         int8_t lastSlotUsed = -1;
 
-        u.dword = FL_PGM_READ_DWORD_NEAR( progent);
+        u.dword = pgm_read_dword_near( progent);
         CRGB rgbstart( u.r, u.g, u.b);
 
         int indexstart = 0;
         uint8_t istart8 = 0;
         uint8_t iend8 = 0;
         while( indexstart < 255) {
-            ++progent;
-            u.dword = FL_PGM_READ_DWORD_NEAR( progent);
+            progent++;
+            u.dword = pgm_read_dword_near( progent);
             int indexend  = u.index;
             CRGB rgbend( u.r, u.g, u.b);
             istart8 = indexstart / 16;
@@ -867,10 +775,10 @@ public:
         TRGBGradientPaletteEntryUnion u;
 
         // Count entries
-        uint16_t count = 0;
+        uint8_t count = 0;
         do {
             u = *(ent + count);
-            ++count;
+            count++;;
         } while ( u.index != 255);
 
         int8_t lastSlotUsed = -1;
@@ -883,7 +791,7 @@ public:
         uint8_t istart8 = 0;
         uint8_t iend8 = 0;
         while( indexstart < 255) {
-            ++ent;
+            ent++;
             u = *ent;
             int indexend  = u.index;
             CRGB rgbend( u.r, u.g, u.b);
@@ -907,405 +815,6 @@ public:
 
 };
 
-
-
-class CHSVPalette32 {
-public:
-    CHSV entries[32];
-    CHSVPalette32() {};
-    CHSVPalette32( const CHSV& c00,const CHSV& c01,const CHSV& c02,const CHSV& c03,
-                  const CHSV& c04,const CHSV& c05,const CHSV& c06,const CHSV& c07,
-                  const CHSV& c08,const CHSV& c09,const CHSV& c10,const CHSV& c11,
-                  const CHSV& c12,const CHSV& c13,const CHSV& c14,const CHSV& c15 )
-    {
-        for( uint8_t i = 0; i < 2; ++i) {
-            entries[0+i]=c00; entries[2+i]=c01; entries[4+i]=c02; entries[6+i]=c03;
-            entries[8+i]=c04; entries[10+i]=c05; entries[12+i]=c06; entries[14+i]=c07;
-            entries[16+i]=c08; entries[18+i]=c09; entries[20+i]=c10; entries[22+i]=c11;
-            entries[24+i]=c12; entries[26+i]=c13; entries[28+i]=c14; entries[30+i]=c15;
-        }
-    };
-    
-    CHSVPalette32( const CHSVPalette32& rhs)
-    {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-    }
-    CHSVPalette32& operator=( const CHSVPalette32& rhs)
-    {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-        return *this;
-    }
-    
-    CHSVPalette32( const TProgmemHSVPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            CRGB xyz   =  FL_PGM_READ_DWORD_NEAR( rhs + i);
-            entries[i].hue = xyz.red;
-            entries[i].sat = xyz.green;
-            entries[i].val = xyz.blue;
-        }
-    }
-    CHSVPalette32& operator=( const TProgmemHSVPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            CRGB xyz   =  FL_PGM_READ_DWORD_NEAR( rhs + i);
-            entries[i].hue = xyz.red;
-            entries[i].sat = xyz.green;
-            entries[i].val = xyz.blue;
-        }
-        return *this;
-    }
-    
-    inline CHSV& operator[] (uint8_t x) __attribute__((always_inline))
-    {
-        return entries[x];
-    }
-    inline const CHSV& operator[] (uint8_t x) const __attribute__((always_inline))
-    {
-        return entries[x];
-    }
-    
-    inline CHSV& operator[] (int x) __attribute__((always_inline))
-    {
-        return entries[(uint8_t)x];
-    }
-    inline const CHSV& operator[] (int x) const __attribute__((always_inline))
-    {
-        return entries[(uint8_t)x];
-    }
-    
-    operator CHSV*()
-    {
-        return &(entries[0]);
-    }
-    
-    bool operator==( const CHSVPalette32 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint8_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CHSVPalette32 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
-    CHSVPalette32( const CHSV& c1)
-    {
-        fill_solid( &(entries[0]), 32, c1);
-    }
-    CHSVPalette32( const CHSV& c1, const CHSV& c2)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2);
-    }
-    CHSVPalette32( const CHSV& c1, const CHSV& c2, const CHSV& c3)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2, c3);
-    }
-    CHSVPalette32( const CHSV& c1, const CHSV& c2, const CHSV& c3, const CHSV& c4)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2, c3, c4);
-    }
-    
-};
-
-class CRGBPalette32 {
-public:
-    CRGB entries[32];
-    CRGBPalette32() {};
-    CRGBPalette32( const CRGB& c00,const CRGB& c01,const CRGB& c02,const CRGB& c03,
-                  const CRGB& c04,const CRGB& c05,const CRGB& c06,const CRGB& c07,
-                  const CRGB& c08,const CRGB& c09,const CRGB& c10,const CRGB& c11,
-                  const CRGB& c12,const CRGB& c13,const CRGB& c14,const CRGB& c15 )
-    {
-        for( uint8_t i = 0; i < 2; ++i) {
-            entries[0+i]=c00; entries[2+i]=c01; entries[4+i]=c02; entries[6+i]=c03;
-            entries[8+i]=c04; entries[10+i]=c05; entries[12+i]=c06; entries[14+i]=c07;
-            entries[16+i]=c08; entries[18+i]=c09; entries[20+i]=c10; entries[22+i]=c11;
-            entries[24+i]=c12; entries[26+i]=c13; entries[28+i]=c14; entries[30+i]=c15;
-        }
-    };
-    
-    CRGBPalette32( const CRGBPalette32& rhs)
-    {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-    }
-    CRGBPalette32( const CRGB rhs[32])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
-    }
-    CRGBPalette32& operator=( const CRGBPalette32& rhs)
-    {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-        return *this;
-    }
-    CRGBPalette32& operator=( const CRGB rhs[32])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
-        return *this;
-    }
-    
-    CRGBPalette32( const CHSVPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
-        }
-    }
-    CRGBPalette32( const CHSV rhs[32])
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
-        }
-    }
-    CRGBPalette32& operator=( const CHSVPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
-        }
-        return *this;
-    }
-    CRGBPalette32& operator=( const CHSV rhs[32])
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
-        }
-        return *this;
-    }
-    
-    CRGBPalette32( const TProgmemRGBPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] =  FL_PGM_READ_DWORD_NEAR( rhs + i);
-        }
-    }
-    CRGBPalette32& operator=( const TProgmemRGBPalette32& rhs)
-    {
-        for( uint8_t i = 0; i < 32; ++i) {
-            entries[i] =  FL_PGM_READ_DWORD_NEAR( rhs + i);
-        }
-        return *this;
-    }
-    
-    bool operator==( const CRGBPalette32 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint8_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CRGBPalette32 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
-    inline CRGB& operator[] (uint8_t x) __attribute__((always_inline))
-    {
-        return entries[x];
-    }
-    inline const CRGB& operator[] (uint8_t x) const __attribute__((always_inline))
-    {
-        return entries[x];
-    }
-    
-    inline CRGB& operator[] (int x) __attribute__((always_inline))
-    {
-        return entries[(uint8_t)x];
-    }
-    inline const CRGB& operator[] (int x) const __attribute__((always_inline))
-    {
-        return entries[(uint8_t)x];
-    }
-    
-    operator CRGB*()
-    {
-        return &(entries[0]);
-    }
-    
-    CRGBPalette32( const CHSV& c1)
-    {
-        fill_solid( &(entries[0]), 32, c1);
-    }
-    CRGBPalette32( const CHSV& c1, const CHSV& c2)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2);
-    }
-    CRGBPalette32( const CHSV& c1, const CHSV& c2, const CHSV& c3)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2, c3);
-    }
-    CRGBPalette32( const CHSV& c1, const CHSV& c2, const CHSV& c3, const CHSV& c4)
-    {
-        fill_gradient( &(entries[0]), 32, c1, c2, c3, c4);
-    }
-    
-    CRGBPalette32( const CRGB& c1)
-    {
-        fill_solid( &(entries[0]), 32, c1);
-    }
-    CRGBPalette32( const CRGB& c1, const CRGB& c2)
-    {
-        fill_gradient_RGB( &(entries[0]), 32, c1, c2);
-    }
-    CRGBPalette32( const CRGB& c1, const CRGB& c2, const CRGB& c3)
-    {
-        fill_gradient_RGB( &(entries[0]), 32, c1, c2, c3);
-    }
-    CRGBPalette32( const CRGB& c1, const CRGB& c2, const CRGB& c3, const CRGB& c4)
-    {
-        fill_gradient_RGB( &(entries[0]), 32, c1, c2, c3, c4);
-    }
-    
-    
-    CRGBPalette32( const CRGBPalette16& rhs16)
-    {
-        UpscalePalette( rhs16, *this);
-    }
-    CRGBPalette32& operator=( const CRGBPalette16& rhs16)
-    {
-        UpscalePalette( rhs16, *this);
-        return *this;
-    }
-    
-    CRGBPalette32( const TProgmemRGBPalette16& rhs)
-    {
-        CRGBPalette16 p16(rhs);
-        *this = p16;
-    }
-    CRGBPalette32& operator=( const TProgmemRGBPalette16& rhs)
-    {
-        CRGBPalette16 p16(rhs);
-        *this = p16;
-        return *this;
-    }
-    
-    
-    // Gradient palettes are loaded into CRGB16Palettes in such a way
-    // that, if possible, every color represented in the gradient palette
-    // is also represented in the CRGBPalette32.
-    // For example, consider a gradient palette that is all black except
-    // for a single, one-element-wide (1/256th!) spike of red in the middle:
-    //     0,   0,0,0
-    //   124,   0,0,0
-    //   125, 255,0,0  // one 1/256th-palette-wide red stripe
-    //   126,   0,0,0
-    //   255,   0,0,0
-    // A naive conversion of this 256-element palette to a 16-element palette
-    // might accidentally completely eliminate the red spike, rendering the
-    // palette completely black.
-    // However, the conversions provided here would attempt to include a
-    // the red stripe in the output, more-or-less as faithfully as possible.
-    // So in this case, the resulting CRGBPalette32 palette would have a red
-    // stripe in the middle which was 1/16th of a palette wide -- the
-    // narrowest possible in a CRGBPalette32.
-    // This means that the relative width of stripes in a CRGBPalette32
-    // will be, by definition, different from the widths in the gradient
-    // palette.  This code attempts to preserve "all the colors", rather than
-    // the exact stripe widths at the expense of dropping some colors.
-    CRGBPalette32( TProgmemRGBGradientPalette_bytes progpal )
-    {
-        *this = progpal;
-    }
-    CRGBPalette32& operator=( TProgmemRGBGradientPalette_bytes progpal )
-    {
-        TRGBGradientPaletteEntryUnion* progent = (TRGBGradientPaletteEntryUnion*)(progpal);
-        TRGBGradientPaletteEntryUnion u;
-        
-        // Count entries
-        uint16_t count = 0;
-        do {
-            u.dword = FL_PGM_READ_DWORD_NEAR(progent + count);
-            ++count;
-        } while ( u.index != 255);
-        
-        int8_t lastSlotUsed = -1;
-        
-        u.dword = FL_PGM_READ_DWORD_NEAR( progent);
-        CRGB rgbstart( u.r, u.g, u.b);
-        
-        int indexstart = 0;
-        uint8_t istart8 = 0;
-        uint8_t iend8 = 0;
-        while( indexstart < 255) {
-            ++progent;
-            u.dword = FL_PGM_READ_DWORD_NEAR( progent);
-            int indexend  = u.index;
-            CRGB rgbend( u.r, u.g, u.b);
-            istart8 = indexstart / 8;
-            iend8   = indexend   / 8;
-            if( count < 16) {
-                if( (istart8 <= lastSlotUsed) && (lastSlotUsed < 31)) {
-                    istart8 = lastSlotUsed + 1;
-                    if( iend8 < istart8) {
-                        iend8 = istart8;
-                    }
-                }
-                lastSlotUsed = iend8;
-            }
-            fill_gradient_RGB( &(entries[0]), istart8, rgbstart, iend8, rgbend);
-            indexstart = indexend;
-            rgbstart = rgbend;
-        }
-        return *this;
-    }
-    CRGBPalette32& loadDynamicGradientPalette( TDynamicRGBGradientPalette_bytes gpal )
-    {
-        TRGBGradientPaletteEntryUnion* ent = (TRGBGradientPaletteEntryUnion*)(gpal);
-        TRGBGradientPaletteEntryUnion u;
-        
-        // Count entries
-        uint16_t count = 0;
-        do {
-            u = *(ent + count);
-            ++count;
-        } while ( u.index != 255);
-        
-        int8_t lastSlotUsed = -1;
-        
-        
-        u = *ent;
-        CRGB rgbstart( u.r, u.g, u.b);
-        
-        int indexstart = 0;
-        uint8_t istart8 = 0;
-        uint8_t iend8 = 0;
-        while( indexstart < 255) {
-            ++ent;
-            u = *ent;
-            int indexend  = u.index;
-            CRGB rgbend( u.r, u.g, u.b);
-            istart8 = indexstart / 8;
-            iend8   = indexend   / 8;
-            if( count < 16) {
-                if( (istart8 <= lastSlotUsed) && (lastSlotUsed < 31)) {
-                    istart8 = lastSlotUsed + 1;
-                    if( iend8 < istart8) {
-                        iend8 = istart8;
-                    }
-                }
-                lastSlotUsed = iend8;
-            }
-            fill_gradient_RGB( &(entries[0]), istart8, rgbstart, iend8, rgbend);
-            indexstart = indexend;
-            rgbstart = rgbend;
-        }
-        return *this;
-    }
-    
-};
-
-
-
 class CRGBPalette256 {
 public:
     CRGB entries[256];
@@ -1322,47 +831,25 @@ public:
 
     CRGBPalette256( const CRGBPalette256& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-    }
-    CRGBPalette256( const CRGB rhs[256])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
     }
     CRGBPalette256& operator=( const CRGBPalette256& rhs)
     {
-        memmove8( (void *) &(entries[0]), &(rhs.entries[0]), sizeof( entries));
-        return *this;
-    }
-    CRGBPalette256& operator=( const CRGB rhs[256])
-    {
-        memmove8( (void *) &(entries[0]), &(rhs[0]), sizeof( entries));
+        memmove8( &(entries[0]), &(rhs.entries[0]), sizeof( entries));
         return *this;
     }
 
     CRGBPalette256( const CHSVPalette256& rhs)
     {
-    	for( int i = 0; i < 256; ++i) {
+    	for( int i = 0; i < 256; i++) {
 	    	entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
     	}
-    }
-    CRGBPalette256( const CHSV rhs[256])
-    {
-        for( int i = 0; i < 256; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
-        }
     }
     CRGBPalette256& operator=( const CHSVPalette256& rhs)
     {
-    	for( int i = 0; i < 256; ++i) {
+    	for( int i = 0; i < 256; i++) {
 	    	entries[i] = rhs.entries[i]; // implicit HSV-to-RGB conversion
     	}
-        return *this;
-    }
-    CRGBPalette256& operator=( const CHSV rhs[256])
-    {
-        for( int i = 0; i < 256; ++i) {
-            entries[i] = rhs[i]; // implicit HSV-to-RGB conversion
-        }
         return *this;
     }
 
@@ -1388,23 +875,6 @@ public:
         return *this;
     }
 
-    bool operator==( const CRGBPalette256 rhs)
-    {
-        const uint8_t* p = (const uint8_t*)(&(this->entries[0]));
-        const uint8_t* q = (const uint8_t*)(&(rhs.entries[0]));
-        if( p == q) return true;
-        for( uint16_t i = 0; i < (sizeof( entries)); ++i) {
-            if( *p != *q) return false;
-            ++p;
-            ++q;
-        }
-        return true;
-    }
-    bool operator!=( const CRGBPalette256 rhs)
-    {
-        return !( *this == rhs);
-    }
-    
     inline CRGB& operator[] (uint8_t x) __attribute__((always_inline))
     {
         return entries[x];
@@ -1470,13 +940,13 @@ public:
     {
         TRGBGradientPaletteEntryUnion* progent = (TRGBGradientPaletteEntryUnion*)(progpal);
         TRGBGradientPaletteEntryUnion u;
-        u.dword = FL_PGM_READ_DWORD_NEAR( progent);
+        u.dword = pgm_read_dword_near( progent);
         CRGB rgbstart( u.r, u.g, u.b);
 
         int indexstart = 0;
         while( indexstart < 255) {
-            ++progent;
-            u.dword = FL_PGM_READ_DWORD_NEAR( progent);
+            progent++;
+            u.dword = pgm_read_dword_near( progent);
             int indexend  = u.index;
             CRGB rgbend( u.r, u.g, u.b);
             fill_gradient_RGB( &(entries[0]), indexstart, rgbstart, indexend, rgbend);
@@ -1494,7 +964,7 @@ public:
 
         int indexstart = 0;
         while( indexstart < 255) {
-            ++ent;
+            ent++;
             u = *ent;
             int indexend  = u.index;
             CRGB rgbend( u.r, u.g, u.b);
@@ -1505,6 +975,7 @@ public:
         return *this;
     }
 };
+
 
 
 
@@ -1535,21 +1006,6 @@ CHSV ColorFromPalette( const CHSVPalette256& pal,
                        uint8_t brightness=255,
                        TBlendType blendType=NOBLEND );
 
-CRGB ColorFromPalette( const CRGBPalette32& pal,
-                      uint8_t index,
-                      uint8_t brightness=255,
-                      TBlendType blendType=LINEARBLEND);
-
-CRGB ColorFromPalette( const TProgmemRGBPalette32& pal,
-                      uint8_t index,
-                      uint8_t brightness=255,
-                      TBlendType blendType=LINEARBLEND);
-
-CHSV ColorFromPalette( const CHSVPalette32& pal,
-                      uint8_t index,
-                      uint8_t brightness=255,
-                      TBlendType blendType=LINEARBLEND);
-
 
 // Fill a range of LEDs with a sequece of entryies from a palette
 template <typename PALETTE>
@@ -1557,7 +1013,7 @@ void fill_palette(CRGB* L, uint16_t N, uint8_t startIndex, uint8_t incIndex,
                   const PALETTE& pal, uint8_t brightness, TBlendType blendType)
 {
     uint8_t colorIndex = startIndex;
-    for( uint16_t i = 0; i < N; ++i) {
+    for( uint16_t i = 0; i < N; i++) {
         L[i] = ColorFromPalette( pal, colorIndex, brightness, blendType);
         colorIndex += incIndex;
     }
@@ -1572,7 +1028,7 @@ void map_data_into_colors_through_palette(
 	uint8_t opacity=255,
 	TBlendType blendType=LINEARBLEND)
 {
-	for( uint16_t i = 0; i < dataCount; ++i) {
+	for( uint16_t i = 0; i < dataCount; i++) {
 		uint8_t d = dataArray[i];
 		CRGB rgb = ColorFromPalette( pal, d, brightness, blendType);
 		if( opacity == 255 ) {
@@ -1668,12 +1124,10 @@ void nblendPaletteTowardPalette( CRGBPalette16& currentPalette,
 //
 
 #define DEFINE_GRADIENT_PALETTE(X) \
-  FL_ALIGN_PROGMEM \
-  extern const TProgmemRGBGradientPalette_byte X[] FL_PROGMEM =
+  extern const TProgmemRGBGradientPalette_byte X[] PROGMEM =
 
 #define DECLARE_GRADIENT_PALETTE(X) \
-  FL_ALIGN_PROGMEM \
-  extern const TProgmemRGBGradientPalette_byte X[] FL_PROGMEM
+  extern const TProgmemRGBGradientPalette_byte X[] PROGMEM
 
 
 // Functions to apply gamma adjustments, either:
@@ -1702,5 +1156,4 @@ void   napplyGamma_video( CRGB* rgbarray, uint16_t count, float gammaR, float ga
 
 FASTLED_NAMESPACE_END
 
-///@}
 #endif
