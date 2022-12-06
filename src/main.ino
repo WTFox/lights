@@ -11,13 +11,9 @@ FASTLED_USING_NAMESPACE;
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS 200
-#define FRAMES_PER_SECOND 120
-#define UPDATES_PER_SECOND 50
+#define FRAMES_PER_SECOND 60
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
-
-// CRGBPalette16 currentPalette;
-// TBlendType currentBlending;
 
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
@@ -25,49 +21,48 @@ extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 extern CRGBPalette16 myChristmasPalette;
 extern const TProgmemPalette16 myChristmasPalette_p PROGMEM;
 
+uint8_t iteration;
+
+typedef void (*SimplePatternList[])();
+SimplePatternList gPatterns = {christmas, rainbow,  rainbowWithGlitter,
+                               confetti,  sinelon,  juggle,
+                               bpm,       christmas};
+
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is
+uint8_t gHue = 0;                  // rotating "base color" used by many of the
+
 void setup() {
     delay(3000);
     FastLED.addLeds<LED_TYPE, DATA_PIN>(leds, NUM_LEDS)
         .setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
+    iteration = 0;
 }
 
 void loop() {
-    static uint8_t iteration = 0;
-    iteration = iteration + 1; /* motion speed */
-
-    FillLEDsFromPaletteColors(iteration, myChristmasPalette_p);
-
+    // Call the current pattern function once, updating the 'leds' array
+    gPatterns[gCurrentPatternNumber]();
     FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+
+    // insert a delay to keep the framerate modest
+    FastLED.delay(1000 / FRAMES_PER_SECOND);
+
+    // do some periodic updates
+    EVERY_N_MILLISECONDS(20) {
+        gHue++;
+    } // slowly cycle the "base color" through the rainbow
+    EVERY_N_SECONDS(10) { nextPattern(); } // change patterns periodically
+    iteration++;
 }
 
-typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = {
-    rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm};
+void nextPattern() {
+    gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+}
 
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is
-uint8_t gHue = 0;                  // rotating "base color" used by many of the
-
-// void loop() {
-//     // Call the current pattern function once, updating the 'leds' array
-//     gPatterns[gCurrentPatternNumber]();
-//     FastLED.show();
-
-//     // insert a delay to keep the framerate modest
-//     FastLED.delay(1000 / FRAMES_PER_SECOND);
-
-//     // do some periodic updates
-//     EVERY_N_MILLISECONDS(20) {
-//         gHue++;
-//     } // slowly cycle the "base color" through the rainbow
-//     EVERY_N_SECONDS(10) { nextPattern(); } // change patterns periodically
-// }
-
-// void nextPattern() {
-//     gCurrentPatternNumber = (gCurrentPatternNumber + 1) %
-//     ARRAY_SIZE(gPatterns);
-// }
+void christmas() {
+    FillLEDsFromPaletteColors(myChristmasPalette_p);
+    addGlitter(30);
+}
 
 void rainbow() { fill_rainbow(leds, NUM_LEDS, gHue, 7); }
 
@@ -117,31 +112,24 @@ void juggle() {
     }
 }
 
-void FillLEDsFromPaletteColors(uint8_t colorIndex,
-                               CRGBPalette16 currentPalette) {
-    uint8_t brightness = 255;
+void FillLEDsFromPaletteColors(CRGBPalette16 currentPalette) {
+    uint8_t colorIndex = iteration;
     for (int i = 0; i < NUM_LEDS; ++i) {
-        leds[i] = ColorFromPalette(currentPalette, colorIndex, brightness,
-                                   LINEARBLEND);
+        leds[i] = ColorFromPalette(currentPalette, colorIndex,
+                                   (uint8_t)BRIGHTNESS, LINEARBLEND);
         colorIndex += 3;
     }
-    addGlitter(30);
 }
 
 const TProgmemPalette16 myChristmasPalette_p PROGMEM = {
-    CRGB::Red,   CRGB::Red,   CRGB::Green, CRGB::Green,
+    CRGB::Red,   CRGB::Green, CRGB::Green, CRGB::Green,
     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
-    CRGB::Green, CRGB::Green, CRGB::Black, CRGB::Black};
+    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black};
 
 const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM = {
-    CRGB::Red,
-    CRGB::Gray, // 'white' is too bright compared to red and blue
-    CRGB::Blue, CRGB::Black,
-
-    CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black,
-
-    CRGB::Red,  CRGB::Red,   CRGB::Gray,  CRGB::Gray,
+    CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black, CRGB::Red,  CRGB::Gray,
+    CRGB::Blue, CRGB::Black, CRGB::Red,   CRGB::Red,   CRGB::Gray, CRGB::Gray,
     CRGB::Blue, CRGB::Blue,  CRGB::Black, CRGB::Black};
 
 // There are several different palettes of colors demonstrated here.
