@@ -5,7 +5,7 @@
  * Date:
  */
 
-#include <FastLED.h>
+#include "../lib/FastLED/src/FastLED.h"
 FASTLED_USING_NAMESPACE;
 
 #define PARTICLE_NO_ARDUINO_COMPATIBILITY 1
