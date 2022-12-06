@@ -6,10 +6,6 @@
 volatile uint32_t fuckit;
 #endif
 
-#if defined(ARDUINO) || defined(SPARK)
-extern uint32_t millis();
-#endif
-
 FASTLED_NAMESPACE_BEGIN
 
 void *pSmartMatrix = NULL;
@@ -20,6 +16,9 @@ CLEDController *CLEDController::m_pHead = NULL;
 CLEDController *CLEDController::m_pTail = NULL;
 static uint32_t lastshow = 0;
 
+uint32_t _frame_cnt=0;
+uint32_t _retry_cnt=0;
+
 // uint32_t CRGB::Squant = ((uint32_t)((__TIME__[4]-'0') * 28))<<16 | ((__TIME__[6]-'0')*50)<<8 | ((__TIME__[7]-'0')*28);
 
 CFastLED::CFastLED() {
@@ -27,17 +26,19 @@ CFastLED::CFastLED() {
 	// m_nControllers = 0;
 	m_Scale = 255;
 	m_nFPS = 0;
-	setMaxRefreshRate(400);
+	m_pPowerFunc = NULL;
+	m_nPowerData = 0xFFFFFFFF;
 }
 
 CLEDController &CFastLED::addLeds(CLEDController *pLed,
-									   struct CRGB *data,
-									   int nLedsOrOffset, int nLedsIfOffset) {
+								  struct CRGB *data,
+								  int nLedsOrOffset, int nLedsIfOffset) {
 	int nOffset = (nLedsIfOffset > 0) ? nLedsOrOffset : 0;
 	int nLeds = (nLedsIfOffset > 0) ? nLedsIfOffset : nLedsOrOffset;
 
 	pLed->init();
 	pLed->setLeds(data + nOffset, nLeds);
+	FastLED.setMaxRefreshRate(pLed->getMaxRefreshRate(),true);
 	return *pLed;
 }
 
@@ -45,6 +46,11 @@ void CFastLED::show(uint8_t scale) {
 	// guard against showing too rapidly
 	while(m_nMinMicros && ((micros()-lastshow) < m_nMinMicros));
 	lastshow = micros();
+
+	// If we have a function for computing power, use it!
+	if(m_pPowerFunc) {
+		scale = (*m_pPowerFunc)(scale, m_nPowerData);
+	}
 
 	CLEDController *pCur = CLEDController::head();
 	while(pCur) {
@@ -61,7 +67,7 @@ int CFastLED::count() {
     int x = 0;
 	CLEDController *pCur = CLEDController::head();
 	while( pCur) {
-        x++;
+        ++x;
 		pCur = pCur->next();
 	}
     return x;
@@ -83,6 +89,11 @@ void CFastLED::showColor(const struct CRGB & color, uint8_t scale) {
 	while(m_nMinMicros && ((micros()-lastshow) < m_nMinMicros));
 	lastshow = micros();
 
+	// If we have a function for computing power, use it!
+	if(m_pPowerFunc) {
+		scale = (*m_pPowerFunc)(scale, m_nPowerData);
+	}
+
 	CLEDController *pCur = CLEDController::head();
 	while(pCur) {
 		uint8_t d = pCur->getDither();
@@ -94,7 +105,7 @@ void CFastLED::showColor(const struct CRGB & color, uint8_t scale) {
 	countFPS();
 }
 
-void CFastLED::clear(boolean writeData) {
+void CFastLED::clear(bool writeData) {
 	if(writeData) {
 		showColor(CRGB(0,0,0), 0);
 	}
@@ -110,15 +121,17 @@ void CFastLED::clearData() {
 }
 
 void CFastLED::delay(unsigned long ms) {
-	unsigned long start = ::millis();
-	while((::millis()-start) < ms) {
+	unsigned long start = millis();
+        do {
 #ifndef FASTLED_ACCURATE_CLOCK
 		// make sure to allow at least one ms to pass to ensure the clock moves
 		// forward
 		::delay(1);
 #endif
 		show();
+		yield();
 	}
+	while((millis()-start) < ms);
 }
 
 void CFastLED::setTemperature(const struct CRGB & temp) {
@@ -191,39 +204,56 @@ extern int noise_min;
 extern int noise_max;
 
 void CFastLED::countFPS(int nFrames) {
-  static int br = 0;
-  static uint32_t lastframe = 0; // ::millis();
+	static int br = 0;
+	static uint32_t lastframe = 0; // millis();
 
-  if(br++ >= nFrames) {
-		uint32_t now = ::millis();
+	if(br++ >= nFrames) {
+		uint32_t now = millis();
 		now -= lastframe;
-		m_nFPS = (br * 1000) / now;
-    br = 0;
-    lastframe = ::millis();
-  }
-}
-
-void CFastLED::setMaxRefreshRate(uint16_t refresh) {
-		if(refresh > 0) {
-			m_nMinMicros = 1000000 / refresh;
-		} else {
-			m_nMinMicros = 0;
+		if(now == 0) {
+			now = 1; // prevent division by zero below
 		}
+		m_nFPS = (br * 1000) / now;
+		br = 0;
+		lastframe = millis();
+	}
 }
 
+void CFastLED::setMaxRefreshRate(uint16_t refresh, bool constrain) {
+	if(constrain) {
+		// if we're constraining, the new value of m_nMinMicros _must_ be higher than previously (because we're only
+		// allowed to slow things down if constraining)
+		if(refresh > 0) {
+			m_nMinMicros = ((1000000 / refresh) > m_nMinMicros) ? (1000000 / refresh) : m_nMinMicros;
+		}
+	} else if(refresh > 0) {
+		m_nMinMicros = 1000000 / refresh;
+	} else {
+		m_nMinMicros = 0;
+	}
+}
+
+extern "C" int atexit(void (* /*func*/ )()) { return 0; }
+
+#ifdef FASTLED_NEEDS_YIELD
+extern "C" void yield(void) { }
+#endif
 
 #ifdef NEED_CXX_BITS
 namespace __cxxabiv1
 {
+	#if !defined(ESP8266) && !defined(ESP32)
 	extern "C" void __cxa_pure_virtual (void) {}
+	#endif
+
 	/* guard variables */
 
 	/* The ABI requires a 64-bit type.  */
 	__extension__ typedef int __guard __attribute__((mode(__DI__)));
 
-	extern "C" int __cxa_guard_acquire (__guard *);
-	extern "C" void __cxa_guard_release (__guard *);
-	extern "C" void __cxa_guard_abort (__guard *);
+	extern "C" int __cxa_guard_acquire (__guard *) __attribute__((weak));
+	extern "C" void __cxa_guard_release (__guard *) __attribute__((weak));
+	extern "C" void __cxa_guard_abort (__guard *) __attribute__((weak));
 
 	extern "C" int __cxa_guard_acquire (__guard *g)
 	{
