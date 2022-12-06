@@ -12,8 +12,18 @@ CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS 200
 #define FRAMES_PER_SECOND 120
+#define UPDATES_PER_SECOND 50
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
+// CRGBPalette16 currentPalette;
+// TBlendType currentBlending;
+
+extern CRGBPalette16 myRedWhiteBluePalette;
+extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
+
+extern CRGBPalette16 myChristmasPalette;
+extern const TProgmemPalette16 myChristmasPalette_p PROGMEM;
 
 void setup() {
     delay(3000);
@@ -22,33 +32,42 @@ void setup() {
     FastLED.setBrightness(BRIGHTNESS);
 }
 
-// List of patterns to cycle through.  Each is defined as a separate function
-// below.
+void loop() {
+    static uint8_t iteration = 0;
+    iteration = iteration + 1; /* motion speed */
+
+    FillLEDsFromPaletteColors(iteration, myChristmasPalette_p);
+
+    FastLED.show();
+    FastLED.delay(1000 / UPDATES_PER_SECOND);
+}
+
 typedef void (*SimplePatternList[])();
 SimplePatternList gPatterns = {
     rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm};
 
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
-uint8_t gHue = 0; // rotating "base color" used by many of the patterns
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is
+uint8_t gHue = 0;                  // rotating "base color" used by many of the
 
-void loop() {
-    // Call the current pattern function once, updating the 'leds' array
-    gPatterns[gCurrentPatternNumber]();
-    FastLED.show();
+// void loop() {
+//     // Call the current pattern function once, updating the 'leds' array
+//     gPatterns[gCurrentPatternNumber]();
+//     FastLED.show();
 
-    // insert a delay to keep the framerate modest
-    FastLED.delay(1000 / FRAMES_PER_SECOND);
+//     // insert a delay to keep the framerate modest
+//     FastLED.delay(1000 / FRAMES_PER_SECOND);
 
-    // do some periodic updates
-    EVERY_N_MILLISECONDS(20) {
-        gHue++;
-    } // slowly cycle the "base color" through the rainbow
-    EVERY_N_SECONDS(10) { nextPattern(); } // change patterns periodically
-}
+//     // do some periodic updates
+//     EVERY_N_MILLISECONDS(20) {
+//         gHue++;
+//     } // slowly cycle the "base color" through the rainbow
+//     EVERY_N_SECONDS(10) { nextPattern(); } // change patterns periodically
+// }
 
-void nextPattern() {
-    gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
-}
+// void nextPattern() {
+//     gCurrentPatternNumber = (gCurrentPatternNumber + 1) %
+//     ARRAY_SIZE(gPatterns);
+// }
 
 void rainbow() { fill_rainbow(leds, NUM_LEDS, gHue, 7); }
 
@@ -59,7 +78,7 @@ void rainbowWithGlitter() {
 
 void addGlitter(fract8 chanceOfGlitter) {
     if (random8() < chanceOfGlitter) {
-        leds[random16(NUM_LEDS)] += CRGB::White;
+        leds[random16(NUM_LEDS)] += CRGB::Gray; // White is too bright
     }
 }
 
@@ -97,3 +116,117 @@ void juggle() {
         dothue += 32;
     }
 }
+
+void FillLEDsFromPaletteColors(uint8_t colorIndex,
+                               CRGBPalette16 currentPalette) {
+    uint8_t brightness = 255;
+    for (int i = 0; i < NUM_LEDS; ++i) {
+        leds[i] = ColorFromPalette(currentPalette, colorIndex, brightness,
+                                   LINEARBLEND);
+        colorIndex += 3;
+    }
+    addGlitter(30);
+}
+
+const TProgmemPalette16 myChristmasPalette_p PROGMEM = {
+    CRGB::Red,   CRGB::Red,   CRGB::Green, CRGB::Green,
+    CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
+    CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
+    CRGB::Green, CRGB::Green, CRGB::Black, CRGB::Black};
+
+const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM = {
+    CRGB::Red,
+    CRGB::Gray, // 'white' is too bright compared to red and blue
+    CRGB::Blue, CRGB::Black,
+
+    CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black,
+
+    CRGB::Red,  CRGB::Red,   CRGB::Gray,  CRGB::Gray,
+    CRGB::Blue, CRGB::Blue,  CRGB::Black, CRGB::Black};
+
+// There are several different palettes of colors demonstrated here.
+//
+// FastLED provides several 'preset' palettes: RainbowColors_p,
+// RainbowStripeColors_p, OceanColors_p, CloudColors_p, LavaColors_p,
+// ForestColors_p, and PartyColors_p.
+//
+// Additionally, you can manually define your own color palettes, or you can
+// write code that creates color palettes on the fly.  All are shown here.
+
+// void ChangePalettePeriodically() {
+//     uint8_t secondHand = (millis() / 1000) % 60;
+//     static uint8_t lastSecond = 99;
+
+//     if (lastSecond != secondHand) {
+//         lastSecond = secondHand;
+//         if (secondHand == 0) {
+//             // currentPalette = RainbowColors_p;
+//             currentPalette = myChristmasPalette_p;
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 10) {
+//             // currentPalette = RainbowStripeColors_p;
+//             currentPalette = myChristmasPalette_p;
+//             currentBlending = NOBLEND;
+//         }
+//         if (secondHand == 15) {
+//             currentPalette = RainbowStripeColors_p;
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 20) {
+//             SetupPurpleAndGreenPalette();
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 25) {
+//             SetupTotallyRandomPalette();
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 30) {
+//             SetupBlackAndWhiteStripedPalette();
+//             currentBlending = NOBLEND;
+//         }
+//         if (secondHand == 35) {
+//             SetupBlackAndWhiteStripedPalette();
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 40) {
+//             currentPalette = CloudColors_p;
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 45) {
+//             currentPalette = PartyColors_p;
+//             currentBlending = LINEARBLEND;
+//         }
+//         if (secondHand == 50) {
+//             currentPalette = myRedWhiteBluePalette_p;
+//             currentBlending = NOBLEND;
+//         }
+//         if (secondHand == 55) {
+//             currentPalette = myRedWhiteBluePalette_p;
+//             currentBlending = LINEARBLEND;
+//         }
+//     }
+// }
+//
+//
+// Additional notes on FastLED compact palettes:
+//
+// Normally, in computer graphics, the palette (or "color lookup table")
+// has 256 entries, each containing a specific 24-bit RGB color.  You can then
+// index into the color palette using a simple 8-bit (one byte) value.
+// A 256-entry color palette takes up 768 bytes of RAM, which on Arduino
+// is quite possibly "too many" bytes.
+//
+// FastLED does offer traditional 256-element palettes, for setups that
+// can afford the 768-byte cost in RAM.
+//
+// However, FastLED also offers a compact alternative.  FastLED offers
+// palettes that store 16 distinct entries, but can be accessed AS IF
+// they actually have 256 entries; this is accomplished by interpolating
+// between the 16 explicit entries to create fifteen intermediate palette
+// entries between each pair.
+//
+// So for example, if you set the first two explicit entries of a compact
+// palette to Green (0,255,0) and Blue (0,0,255), and then retrieved
+// the first sixteen entries from the virtual palette (of 256), you'd get
+// Green, followed by a smooth gradient from green-to-blue, and then Blue.
