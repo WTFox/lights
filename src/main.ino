@@ -26,11 +26,28 @@ SimplePatternList gPatterns = {christmas, rainbow,  rainbowWithGlitter,
 
 const uint8_t numLEDs = ARRAY_SIZE(leds);
 
+int setBrightness(String command) {
+    FastLED.setBrightness(command.toInt());
+    return 1;
+}
+
+int getBrightness(String command) { return FastLED.getBrightness(); }
+
+int gotoNextPattern(String command) {
+    nextPattern();
+    return 1;
+}
+
 void setup() {
     delay(3000);
     FastLED.addLeds<LED_TYPE, DATA_PIN>(leds, NUM_LEDS)
         .setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
+
+    Particle.function("setBrightness", setBrightness);
+    Particle.function("getBrightness", getBrightness);
+    Particle.function("nextPattern", gotoNextPattern);
+
     iteration = 0;
 }
 
@@ -46,6 +63,7 @@ void loop() {
     EVERY_N_SECONDS(10) { nextPattern(); }
     iteration++;
 }
+
 void nextPattern() {
     gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
 }
