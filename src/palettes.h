@@ -35,18 +35,16 @@ FASTLED_USING_NAMESPACE;
 #include "Particle.h"
 #define FL_PROGMEM
 
-extern CRGBPalette16 myRedWhiteBluePalette;
-extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
-
 extern CRGBPalette16 myChristmasPalette;
 extern const TProgmemPalette16 myChristmasPalette_p PROGMEM;
-
 const TProgmemPalette16 myChristmasPalette_p PROGMEM = {
     CRGB::Red,   CRGB::Green, CRGB::Green, CRGB::Green,
     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
     CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black};
 
+extern CRGBPalette16 myRedWhiteBluePalette;
+extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM = {
     CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black, CRGB::Red,  CRGB::Gray,
     CRGB::Blue, CRGB::Black, CRGB::Red,   CRGB::Red,   CRGB::Gray, CRGB::Gray,
