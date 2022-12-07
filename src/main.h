@@ -6,8 +6,6 @@
 #define DATA_PIN D5
 #define LED_TYPE WS2811
 
-#define FRAMES_PER_SECOND 60
-
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 class Context {
@@ -15,9 +13,11 @@ class Context {
     uint8_t numLEDs;
     CRGB *leds;
     uint8_t brightness = 200;
+    uint8_t alertBrightness = 255;
     uint8_t hue = 0;
     uint8_t iteration = 0;
     uint8_t currentPatternNumber = 0;
+    uint8_t fps = 120;
     void setHue(uint8_t hue) { this->hue = hue; }
     void inrecementIteration() { this->iteration++; }
     void setBrightness(uint8_t brightness) { this->brightness = brightness; }
@@ -49,6 +49,13 @@ void addGlitter(fract8 chanceOfGlitter, Context &context) {
 void christmas(Context &context) {
     FillLEDsFromPaletteColors(myChristmasPalette_p, context);
     addGlitter(30, context);
+}
+
+void alternateChristmasColors(Context &context) {
+    for (int i = 0; i < context.numLEDs; i++) {
+        context.leds[i] = myChristmasPalette_p[(i + context.iteration) % 16];
+    }
+    delay(200);
 }
 
 void rainbow(Context &context) {
@@ -97,8 +104,8 @@ void juggle(Context &context) {
 }
 
 void error(Context &context) {
-    for (size_t i = 0; i < 4; i++) {
-        // red & white alternating
+    FastLED.setBrightness(gContext.alertBrightness);
+    for (size_t i = 0; i < 2; i++) {
         for (int i = 0; i < context.numLEDs; i++) {
             if (i % 2 == 0) {
                 context.leds[i] = CRGB::Red;
@@ -107,33 +114,34 @@ void error(Context &context) {
             }
         }
         FastLED.show();
-        delay(300);
+        delay(1000);
 
         for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
-        delay(200);
+        delay(300);
     }
 }
 
 void success(Context &context) {
-    for (size_t i = 0; i < 4; i++) {
+    FastLED.setBrightness(gContext.alertBrightness);
+    for (size_t i = 0; i < 2; i++) {
         for (int i = 0; i < context.numLEDs; i++) {
-            context.leds[i] = CRGB::SpringGreen;
+            context.leds[i] = CRGB::Green;
         }
         FastLED.show();
-        delay(300);
+        delay(1000);
 
         for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
-        delay(200);
+        delay(300);
     }
 }
 
 typedef void (*SimplePatternList[])(Context &context);
-SimplePatternList gPatterns = {christmas, rainbow,  rainbowWithGlitter,
-                               confetti,  sinelon,  juggle,
-                               bpm,       christmas};
+SimplePatternList gPatterns = {
+    christmas, christmas, christmas, rainbow, rainbowWithGlitter,
+    confetti,  sinelon,   juggle,    bpm};
