@@ -27,11 +27,6 @@ int gotoNextPattern(String command) {
     return 1;
 }
 
-int setDelay(String command) {
-    gContext.fps = command.toInt();
-    return 1;
-}
-
 int showError(String command) {
     error(gContext);
     return 1;
@@ -55,7 +50,6 @@ void setup() {
     Particle.function("setAlertBrightness", setAlertBrightness);
     Particle.function("getFPS", getFPS);
     Particle.function("setFPS", setFPS);
-    Particle.function("setDelay", setDelay);
     Particle.function("nextPattern", gotoNextPattern);
     Particle.function("showError", showError);
     Particle.function("showSuccess", showSuccess);
