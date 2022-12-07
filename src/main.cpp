@@ -1,4 +1,18 @@
+/******************************************************/
+//       THIS IS A GENERATED FILE - DO NOT EDIT       //
+/******************************************************/
+
+#include "Particle.h"
+#line 1 "/Users/anthonyfox/dev/lights/src/main.ino"
 #include "../lib/FastLED/src/FastLED.h"
+int setBrightness(String command);
+int getBrightness(String command);
+int gotoNextPattern(String command);
+int showError(String command);
+int showSuccess(String command);
+void setup();
+void loop();
+#line 2 "/Users/anthonyfox/dev/lights/src/main.ino"
 FASTLED_USING_NAMESPACE;
 
 #include "main.h"
@@ -52,6 +66,5 @@ void loop() {
         gContext.currentPatternNumber =
             (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
     }
-
     gContext.iteration++;
 }
