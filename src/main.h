@@ -108,7 +108,7 @@ void error(Context &context) {
         }
         FastLED.show();
 
-            for (int i = 0; i < context.numLEDs; i++) {
+        for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
@@ -122,7 +122,7 @@ void success(Context &context) {
         }
         FastLED.show();
 
-            for (int i = 0; i < context.numLEDs; i++) {
+        for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
