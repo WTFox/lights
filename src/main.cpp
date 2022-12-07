@@ -17,6 +17,9 @@ FASTLED_USING_NAMESPACE;
 
 #include "main.h"
 
+bool shouldShowError = false;
+bool shouldShowSuccess = false;
+
 int setBrightness(String command) {
     FastLED.setBrightness(command.toInt());
     return 1;
@@ -31,12 +34,12 @@ int gotoNextPattern(String command) {
 }
 
 int showError(String command) {
-    error(gContext);
+    shouldShowError = true;
     return 1;
 }
 
 int showSuccess(String command) {
-    success(gContext);
+    shouldShowSuccess = true;
     return 1;
 }
 
@@ -57,7 +60,6 @@ void loop() {
     // Call the current pattern function once, updating the 'leds' array
     gPatterns[gContext.currentPatternNumber](gContext);
 
-    FastLED.show();
     // insert a delay to keep the framerate modest
     FastLED.delay(1000 / FRAMES_PER_SECOND);
 
@@ -66,5 +68,17 @@ void loop() {
         gContext.currentPatternNumber =
             (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
     }
+
+    if (shouldShowError) {
+        shouldShowError = false;
+        error(gContext);
+    }
+
+    if (shouldShowSuccess) {
+        shouldShowSuccess = false;
+        success(gContext);
+    }
+
+    FastLED.show();
     gContext.iteration++;
 }

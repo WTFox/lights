@@ -107,11 +107,13 @@ void error(Context &context) {
             }
         }
         FastLED.show();
+        delay(300);
 
         for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
+        delay(200);
     }
 }
 
@@ -121,11 +123,13 @@ void success(Context &context) {
             context.leds[i] = CRGB::SpringGreen;
         }
         FastLED.show();
+        delay(300);
 
         for (int i = 0; i < context.numLEDs; i++) {
             context.leds[i] = CRGB::Black;
         }
         FastLED.show();
+        delay(200);
     }
 }
 
