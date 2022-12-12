@@ -4,81 +4,94 @@
 
 #include "Particle.h"
 #line 1 "/Users/anthonyfox/dev/lights/src/main.ino"
-#include "../lib/FastLED/src/FastLED.h"
-int setBrightness(String command);
-int getBrightness(String command);
-int gotoNextPattern(String command);
-int showError(String command);
-int showSuccess(String command);
-void setup();
-void loop();
-#line 2 "/Users/anthonyfox/dev/lights/src/main.ino"
-FASTLED_USING_NAMESPACE;
-
 #include "main.h"
 
-bool shouldShowError = false;
-bool shouldShowSuccess = false;
+// int getBrightness(String command) { return gContext.brightness; }
+// int setBrightness(String command) {
+//     gContext.brightness = command.toInt();
+//     return 1;
+// }
 
-int setBrightness(String command) {
-    FastLED.setBrightness(command.toInt());
-    return 1;
-}
+// int getAlertBrightness(String command) { return gContext.alertBrightness; }
+// int setAlertBrightness(String command) {
+//     gContext.alertBrightness = command.toInt();
+//     return 1;
+// }
 
-int getBrightness(String command) { return FastLED.getBrightness(); }
+// int gotoNextPattern(String command) {
+//     gContext.currentPatternNumber =
+//         (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+//     return 1;
+// }
 
-int gotoNextPattern(String command) {
-    gContext.currentPatternNumber =
-        (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
-    return 1;
-}
+// int showError(String command) {
+//     error(gContext);
+//     return 1;
+// }
 
-int showError(String command) {
-    shouldShowError = true;
-    return 1;
-}
+// int showSuccess(String command) {
+//     success(gContext);
+//     return 1;
+// }
 
-int showSuccess(String command) {
-    shouldShowSuccess = true;
-    return 1;
-}
-
+void setup();
+void loop();
+void rainbow(uint8_t wait, Context &context);
+uint32_t Wheel(byte WheelPos, Context &context);
+#line 31 "/Users/anthonyfox/dev/lights/src/main.ino"
 void setup() {
-    delay(3000);
-    FastLED.addLeds<LED_TYPE, DATA_PIN>(gContext.leds, NUM_LEDS)
-        .setCorrection(TypicalLEDStrip);
-    FastLED.setBrightness(gContext.brightness);
+    gContext.strip->begin();
+    gContext.strip->show();
 
-    Particle.function("setBrightness", setBrightness);
-    Particle.function("getBrightness", getBrightness);
-    Particle.function("nextPattern", gotoNextPattern);
-    Particle.function("showError", showError);
-    Particle.function("showSuccess", showSuccess);
+    // Particle.function("getBrightness", getBrightness);
+    // Particle.function("setBrightness", setBrightness);
+    // Particle.function("getAlertBrightness", getAlertBrightness);
+    // Particle.function("setAlertBrightness", setAlertBrightness);
+    // Particle.function("nextPattern", gotoNextPattern);
+    // Particle.function("showError", showError);
+    // Particle.function("showSuccess", showSuccess);
 }
 
 void loop() {
+    gContext.strip->setBrightness(gContext.brightness);
+
     // Call the current pattern function once, updating the 'leds' array
-    gPatterns[gContext.currentPatternNumber](gContext);
+    // gPatterns[gContext.currentPatternNumber](gContext);
 
-    // insert a delay to keep the framerate modest
-    FastLED.delay(1000 / FRAMES_PER_SECOND);
+    // EVERY_N_MILLISECONDS(20) { gContext.hue++; }
+    // EVERY_N_SECONDS(10) {
+    //     gContext.currentPatternNumber =
+    //         (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+    // }
 
-    EVERY_N_MILLISECONDS(20) { gContext.hue++; }
-    EVERY_N_SECONDS(10) {
-        gContext.currentPatternNumber =
-            (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
-    }
+    rainbow(20, gContext);
+    addGlitter(80, gContext);
 
-    if (shouldShowError) {
-        shouldShowError = false;
-        error(gContext);
-    }
-
-    if (shouldShowSuccess) {
-        shouldShowSuccess = false;
-        success(gContext);
-    }
-
-    FastLED.show();
     gContext.iteration++;
+}
+
+void rainbow(uint8_t wait, Context &context) {
+    uint16_t i, j;
+
+    for (j = 0; j < 256; j++) {
+        for (i = 0; i < context.strip->numPixels(); i++) {
+            context.strip->setPixelColor(i, Wheel((i + j) & 255, context));
+        }
+        context.strip->show();
+        delay(wait);
+    }
+}
+
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos, Context &context) {
+    if (WheelPos < 85) {
+        return context.strip->Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+    } else if (WheelPos < 170) {
+        WheelPos -= 85;
+        return context.strip->Color(255 - WheelPos * 3, 0, WheelPos * 3);
+    } else {
+        WheelPos -= 170;
+        return context.strip->Color(0, WheelPos * 3, 255 - WheelPos * 3);
+    }
 }

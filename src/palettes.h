@@ -28,24 +28,18 @@
 // palette to Green (0,255,0) and Blue (0,0,255), and then retrieved
 // the first sixteen entries from the virtual palette (of 256), you'd get
 // Green, followed by a smooth gradient from green-to-blue, and then Blue.
-#include "../lib/FastLED/src/FastLED.h"
-FASTLED_USING_NAMESPACE;
 
-#define PARTICLE_NO_ARDUINO_COMPATIBILITY 1
-#include "Particle.h"
-#define FL_PROGMEM
+// extern CRGBPalette16 myChristmasPalette;
+// extern const TProgmemPalette16 myChristmasPalette_p PROGMEM;
+// const TProgmemPalette16 myChristmasPalette_p PROGMEM = {
+//     CRGB::Red,   CRGB::Green, CRGB::Green, CRGB::Green,
+//     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
+//     CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
+//     CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black};
 
-extern CRGBPalette16 myChristmasPalette;
-extern const TProgmemPalette16 myChristmasPalette_p PROGMEM;
-const TProgmemPalette16 myChristmasPalette_p PROGMEM = {
-    CRGB::Red,   CRGB::Green, CRGB::Green, CRGB::Green,
-    CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
-    CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green,
-    CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black};
-
-extern CRGBPalette16 myRedWhiteBluePalette;
-extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
-const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM = {
-    CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black, CRGB::Red,  CRGB::Gray,
-    CRGB::Blue, CRGB::Black, CRGB::Red,   CRGB::Red,   CRGB::Gray, CRGB::Gray,
-    CRGB::Blue, CRGB::Blue,  CRGB::Black, CRGB::Black};
+// extern CRGBPalette16 myRedWhiteBluePalette;
+// extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
+// const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM = {
+//     CRGB::Red,  CRGB::Gray,  CRGB::Blue,  CRGB::Black, CRGB::Red, CRGB::Gray,
+//     CRGB::Blue, CRGB::Black, CRGB::Red,   CRGB::Red,   CRGB::Gray,
+//     CRGB::Gray, CRGB::Blue, CRGB::Blue,  CRGB::Black, CRGB::Black};
