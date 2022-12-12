@@ -20,125 +20,75 @@ class Context {
     void setBrightness(uint8_t brightness) { this->brightness = brightness; }
 };
 
-Context &gContext = *new Context();
+Context *gContext = new Context();
 
-// // void FillLEDsFromPaletteColors(CRGBPalette16 currentPalette, Context
-// // &context) {
-// //     uint8_t colorIndex = context.iteration;
-// //     for (int i = 0; i < NUM_LEDS; ++i) {
-// //         context.leds[i] = ColorFromPalette(currentPalette, colorIndex,
-// //                                            context.brightness,
-// LINEARBLEND);
-// //         colorIndex += 3;
-// //     }
-// // }
-
-void addGlitter(uint8_t chanceOfGlitter, Context &context) {
-    if (random8(0, context.numLEDs) < chanceOfGlitter) {
-        context.strip->setColor(random16(0, context.numLEDs), 255, 255, 255);
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t wheel(byte WheelPos, Context *context) {
+    if (WheelPos < 85) {
+        return context->strip->Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+    } else if (WheelPos < 170) {
+        WheelPos -= 85;
+        return context->strip->Color(255 - WheelPos * 3, 0, WheelPos * 3);
+    } else {
+        WheelPos -= 170;
+        return context->strip->Color(0, WheelPos * 3, 255 - WheelPos * 3);
     }
-    context.strip->show();
+}
+void addGlitter(uint8_t chanceOfGlitter, Context *context) {
+    if (random8(chanceOfGlitter)) {
+        context->strip->setPixelColor(random16(0, context->strip->numPixels()),
+                                      context->strip->Color(255, 255, 255));
+    }
+    gContext->strip->show();
 }
 
-// // void christmas(Context &context) {
-// //     FillLEDsFromPaletteColors(myChristmasPalette_p, context);
-// //     addGlitter(30, context);
-// // }
+void rainbow(Context *context) {
+    uint16_t i, j;
+    for (j = 0; j < 256; j++) {
+        for (i = 0; i < context->strip->numPixels(); i++) {
+            context->strip->setPixelColor(
+                i, wheel(((i + j + context->iteration) & 255), context));
+        }
+    }
+    gContext->strip->show();
+}
 
-// // void alternateChristmasColors(Context &context) {
-// //     for (int i = 0; i < context.numLEDs; i++) {
-// //         context.leds[i] = myChristmasPalette_p[(i + context.iteration)
-// % 16];
-// //     }
-// //     delay(200);
-// // }
+void rainbowWithGlitter(Context *context) {
+    rainbow(context);
+    addGlitter(10, context);
+}
 
-// void rainbow(Context &context) {
-//     fill_rainbow(context.leds, context.numLEDs, context.hue, 7);
-// }
+void error(Context *context) {
+    context->strip->setBrightness(gContext->alertBrightness);
 
-// void rainbowWithGlitter(Context &context) {
-//     rainbow(context);
-//     addGlitter(80, context);
-// }
+    for (int i = 0; i < context->numLEDs; i++) {
+        context->strip->setPixelColor(i, 255, 0, 0);
+    }
+    context->strip->show();
+    delay(1000);
 
-// void confetti(Context &context) {
-//     // random colored speckles that blink in and fade smoothly
-//     fadeToBlackBy(context.leds, context.numLEDs, 10);
-//     int pos = random16(context.numLEDs);
-//     context.leds[pos] += CHSV(context.hue + random8(64), 200, 255);
-// }
+    for (int i = 0; i < context->numLEDs; i++) {
+        context->strip->setPixelColor(i, 0, 0, 0);
+    }
+    context->strip->show();
+    delay(300);
+}
 
-// void sinelon(Context &context) {
-//     // a colored dot sweeping back and forth, with fading trails
-//     fadeToBlackBy(context.leds, context.numLEDs, 20);
-//     int pos = beatsin16(13, 0, context.numLEDs - 1);
-//     context.leds[pos] += CHSV(context.hue, 255, 192);
-// }
+void success(Context *context) {
+    context->strip->setBrightness(gContext->alertBrightness);
+    for (int i = 0; i < context->numLEDs; i++) {
+        context->strip->setPixelColor(i, Adafruit_NeoPixel::Color(0, 255, 0));
+    }
+    context->strip->show();
+    delay(1000);
 
-// void bpm(Context &context) {
-//     // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-//     uint8_t BeatsPerMinute = 62;
-//     CRGBPalette16 palette = PartyColors_p;
-//     uint8_t beat = beatsin8(BeatsPerMinute, 64, 255);
-//     for (int i = 0; i < context.numLEDs; i++) { // 9948
-//         context.leds[i] = ColorFromPalette(palette, context.hue + (i *
-//         2),
-//                                            beat - context.hue + (i *
-//                                            10));
-//     }
-// }
+    for (int i = 0; i < context->numLEDs; i++) {
+        context->strip->setPixelColor(i, Adafruit_NeoPixel::Color(0, 0, 0));
+    }
+    context->strip->show();
+    delay(300);
+}
 
-// void juggle(Context &context) {
-//     // eight colored dots, weaving in and out of sync with each other
-//     fadeToBlackBy(context.leds, context.numLEDs, 20);
-//     uint8_t dothue = 0;
-//     for (int i = 0; i < 8; i++) {
-//         context.leds[beatsin16(i + 7, 0, context.numLEDs - 1)] |=
-//             CHSV(dothue, 200, 255);
-//         dothue += 32;
-//     }
-// }
-
-// void error(Context &context) {
-//     FastLED.setBrightness(gContext.alertBrightness);
-//     for (size_t i = 0; i < 2; i++) {
-//         for (int i = 0; i < context.numLEDs; i++) {
-//             if (i % 2 == 0) {
-//                 context.leds[i] = CRGB::Red;
-//             } else {
-//                 context.leds[i] = CRGB::White;
-//             }
-//         }
-//         FastLED.show();
-//         delay(1000);
-
-//         for (int i = 0; i < context.numLEDs; i++) {
-//             context.leds[i] = CRGB::Black;
-//         }
-//         FastLED.show();
-//         delay(300);
-//     }
-// }
-
-// void success(Context &context) {
-//     FastLED.setBrightness(gContext.alertBrightness);
-//     for (size_t i = 0; i < 2; i++) {
-//         for (int i = 0; i < context.numLEDs; i++) {
-//             context.leds[i] = CRGB::Green;
-//         }
-//         FastLED.show();
-//         delay(1000);
-
-//         for (int i = 0; i < context.numLEDs; i++) {
-//             context.leds[i] = CRGB::Black;
-//         }
-//         FastLED.show();
-//         delay(300);
-//     }
-// }
-
-// typedef void (*SimplePatternList[])(Context &context);
-// SimplePatternList gPatterns = {
-//     christmas, christmas, christmas, rainbow, rainbowWithGlitter,
-//     confetti,  sinelon,   juggle,    bpm};
+typedef void (*Pattern)(Context *context);
+Pattern gPatterns[] = {rainbow, rainbowWithGlitter};
