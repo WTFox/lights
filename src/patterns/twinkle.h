@@ -13,8 +13,7 @@ extern int ledBrightness[];
 extern int fadeDirection[];
 extern int currentlyTwinkling;
 
-void twinkleLoop(GlobalContext &context);
-
 void twinkleSetup(GlobalContext &context);
+void twinkleLoop(GlobalContext &context);
 
 #endif

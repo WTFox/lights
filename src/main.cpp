@@ -40,6 +40,7 @@ struct Pattern {
 
 Pattern patterns[] = {
     {twinkleSetup, twinkleLoop, "twinkle"},
+    {fireplaceSetup, fireplaceLoop, "fireplace"},
 };
 
 unsigned long lastPatternChange = 0;
@@ -59,6 +60,7 @@ void setup() {
 }
 
 void loop() {
+    context.strip.setBrightness(context.brightness);
     patterns[currentPatternIndex].loopFunc(context);
 
     if (millis() - lastPatternChange >= patternDuration) {

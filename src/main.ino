@@ -24,6 +24,7 @@ struct Pattern {
 
 Pattern patterns[] = {
     {twinkleSetup, twinkleLoop, "twinkle"},
+    {fireplaceSetup, fireplaceLoop, "fireplace"},
 };
 
 unsigned long lastPatternChange = 0;
