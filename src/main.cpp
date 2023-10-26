@@ -4,81 +4,77 @@
 
 #include "Particle.h"
 #line 1 "/Users/anthonyfox/dev/lights/src/main.ino"
-#include "../lib/FastLED/src/FastLED.h"
-int setBrightness(String command);
-int getBrightness(String command);
-int gotoNextPattern(String command);
-int showError(String command);
-int showSuccess(String command);
+#include "GlobalContext.h"
+#include "main.h"
+#include "neopixel.h"
+#include "patterns/allPatterns.h"
+
 void setup();
 void loop();
-#line 2 "/Users/anthonyfox/dev/lights/src/main.ino"
-FASTLED_USING_NAMESPACE;
+int gotoNextPattern(String command);
+int getBrightness(String command);
+int setBrightness(String command);
+int getAlertBrightness(String command);
+int setAlertBrightness(String command);
+int showError(String command);
+int showSuccess(String command);
+#line 6 "/Users/anthonyfox/dev/lights/src/main.ino"
+#define NUM_LEDS 100
+#define DATA_PIN D5
+#define LED_TYPE WS2811
 
-#include "main.h"
+GlobalContext context = {
+    .brightness = 150,
+    .alertBrightness = 255,
+    .currentPattern = 0,
+    .strip = Adafruit_NeoPixel(NUM_LEDS, DATA_PIN, LED_TYPE),
+};
 
-bool shouldShowError = false;
-bool shouldShowSuccess = false;
+typedef void (*PatternFunction)();
 
-int setBrightness(String command) {
-    FastLED.setBrightness(command.toInt());
-    return 1;
-}
+struct Pattern {
+    void (*setupFunc)(GlobalContext &);
+    void (*loopFunc)(GlobalContext &);
+    String name;
+};
 
-int getBrightness(String command) { return FastLED.getBrightness(); }
+Pattern patterns[] = {
+    {twinkleSetup, twinkleLoop, "twinkle"},
+};
 
-int gotoNextPattern(String command) {
-    gContext.currentPatternNumber =
-        (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
-    return 1;
-}
-
-int showError(String command) {
-    shouldShowError = true;
-    return 1;
-}
-
-int showSuccess(String command) {
-    shouldShowSuccess = true;
-    return 1;
-}
+unsigned long lastPatternChange = 0;
+const unsigned long patternDuration = 5000; // 5 seconds
+int currentPatternIndex = 0;
 
 void setup() {
-    delay(3000);
-    FastLED.addLeds<LED_TYPE, DATA_PIN>(gContext.leds, NUM_LEDS)
-        .setCorrection(TypicalLEDStrip);
-    FastLED.setBrightness(gContext.brightness);
-
-    Particle.function("setBrightness", setBrightness);
     Particle.function("getBrightness", getBrightness);
+    Particle.function("setBrightness", setBrightness);
+    Particle.function("getAlertBrightness", getAlertBrightness);
+    Particle.function("setAlertBrightness", setAlertBrightness);
     Particle.function("nextPattern", gotoNextPattern);
-    Particle.function("showError", showError);
-    Particle.function("showSuccess", showSuccess);
+
+    context.strip.begin();
+    context.strip.show();
+    patterns[currentPatternIndex].setupFunc(context);
 }
 
 void loop() {
-    // Call the current pattern function once, updating the 'leds' array
-    gPatterns[gContext.currentPatternNumber](gContext);
+    patterns[currentPatternIndex].loopFunc(context);
 
-    // insert a delay to keep the framerate modest
-    FastLED.delay(1000 / FRAMES_PER_SECOND);
-
-    EVERY_N_MILLISECONDS(20) { gContext.hue++; }
-    EVERY_N_SECONDS(10) {
-        gContext.currentPatternNumber =
-            (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+    if (millis() - lastPatternChange >= patternDuration) {
+        currentPatternIndex = (currentPatternIndex + 1) % ARRAY_SIZE(patterns);
+        patterns[currentPatternIndex].setupFunc(context);
+        lastPatternChange = millis();
     }
-
-    if (shouldShowError) {
-        shouldShowError = false;
-        error(gContext);
-    }
-
-    if (shouldShowSuccess) {
-        shouldShowSuccess = false;
-        success(gContext);
-    }
-
-    FastLED.show();
-    gContext.iteration++;
 }
+
+int gotoNextPattern(String command) { return 1; }
+
+int getBrightness(String command) { return 1; }
+int setBrightness(String command) { return 1; }
+
+int getAlertBrightness(String command) { return 1; }
+int setAlertBrightness(String command) { return 1; }
+
+int showError(String command) { return 1; }
+int showSuccess(String command) { return 1; }

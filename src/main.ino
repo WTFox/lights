@@ -1,75 +1,65 @@
-#include "../lib/FastLED/src/FastLED.h"
-FASTLED_USING_NAMESPACE;
-
+#include "GlobalContext.h"
 #include "main.h"
+#include "neopixel.h"
+#include "patterns/allPatterns.h"
 
-int getBrightness(String command) { return gContext.brightness; }
-int setBrightness(String command) {
-    gContext.brightness = command.toInt();
-    return 1;
-}
+#define NUM_LEDS 100
+#define DATA_PIN D5
+#define LED_TYPE WS2811
 
-int getAlertBrightness(String command) { return gContext.alertBrightness; }
-int setAlertBrightness(String command) {
-    gContext.alertBrightness = command.toInt();
-    return 1;
-}
+GlobalContext context = {
+    .brightness = 150,
+    .alertBrightness = 255,
+    .currentPattern = 0,
+    .strip = Adafruit_NeoPixel(NUM_LEDS, DATA_PIN, LED_TYPE),
+};
 
-int getFPS(String command) { return gContext.fps; }
-int setFPS(String command) {
-    gContext.fps = command.toInt();
-    return 1;
-}
+typedef void (*PatternFunction)();
 
-int gotoNextPattern(String command) {
-    gContext.currentPatternNumber =
-        (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
-    return 1;
-}
+struct Pattern {
+    void (*setupFunc)(GlobalContext &);
+    void (*loopFunc)(GlobalContext &);
+    String name;
+};
 
-int showError(String command) {
-    error(gContext);
-    return 1;
-}
+Pattern patterns[] = {
+    {twinkleSetup, twinkleLoop, "twinkle"},
+};
 
-int showSuccess(String command) {
-    success(gContext);
-    return 1;
-}
+unsigned long lastPatternChange = 0;
+const unsigned long patternDuration = 5000; // 5 seconds
+int currentPatternIndex = 0;
 
 void setup() {
-    delay(3000);
-    FastLED.addLeds<LED_TYPE, DATA_PIN>(gContext.leds, NUM_LEDS)
-        .setCorrection(TypicalLEDStrip);
-
-    FastLED.setBrightness(gContext.brightness);
-
     Particle.function("getBrightness", getBrightness);
     Particle.function("setBrightness", setBrightness);
     Particle.function("getAlertBrightness", getAlertBrightness);
     Particle.function("setAlertBrightness", setAlertBrightness);
-    Particle.function("getFPS", getFPS);
-    Particle.function("setFPS", setFPS);
     Particle.function("nextPattern", gotoNextPattern);
-    Particle.function("showError", showError);
-    Particle.function("showSuccess", showSuccess);
+
+    context.strip.begin();
+    context.strip.show();
+    patterns[currentPatternIndex].setupFunc(context);
 }
 
 void loop() {
-    FastLED.setBrightness(gContext.brightness);
+    context.strip.setBrightness(context.brightness);
+    patterns[currentPatternIndex].loopFunc(context);
 
-    // Call the current pattern function once, updating the 'leds' array
-    gPatterns[gContext.currentPatternNumber](gContext);
-
-    // insert a delay to keep the framerate modest
-    FastLED.delay(1000 / gContext.fps);
-
-    EVERY_N_MILLISECONDS(20) { gContext.hue++; }
-    EVERY_N_SECONDS(10) {
-        gContext.currentPatternNumber =
-            (gContext.currentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+    if (millis() - lastPatternChange >= patternDuration) {
+        currentPatternIndex = (currentPatternIndex + 1) % ARRAY_SIZE(patterns);
+        patterns[currentPatternIndex].setupFunc(context);
+        lastPatternChange = millis();
     }
-
-    FastLED.show();
-    gContext.iteration++;
 }
+
+int gotoNextPattern(String command) { return 1; }
+
+int getBrightness(String command) { return 1; }
+int setBrightness(String command) { return 1; }
+
+int getAlertBrightness(String command) { return 1; }
+int setAlertBrightness(String command) { return 1; }
+
+int showError(String command) { return 1; }
+int showSuccess(String command) { return 1; }
