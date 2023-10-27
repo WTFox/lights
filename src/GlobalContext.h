@@ -9,6 +9,7 @@ struct GlobalContext {
     int lastPatternChange;
     uint8_t iteration;
     Adafruit_NeoPixel strip;
+    bool cyclePatterns;
 };
 
 #endif

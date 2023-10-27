@@ -10,7 +10,7 @@ void rainbowWithGlitterLoop(GlobalContext &context) {
             i, Wheel((i + context.iteration) & 255, context));
     }
 
-    addGlitter(context, 20);
+    addGlitter(context, 5);
     context.strip.show();
     delay(20);
 }
