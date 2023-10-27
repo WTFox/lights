@@ -7,7 +7,10 @@
 #include "fireplace.h"
 #include "halloween.h"
 #include "halloween2.h"
+#include "lullaby.h"
+#include "nightSky.h"
 #include "rainbow.h"
+#include "rainbowConfetti.h"
 #include "rainbowWithGlitter.h"
 #include "twinkle.h"
 

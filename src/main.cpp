@@ -34,13 +34,17 @@ GlobalContext context = {
 
 Pattern patterns[] = {
     {halloweenSetup, halloweenLoop, "halloween"},
-    {confettiSetup, confettiLoop, "confetti"},
+    {halloween2Setup, halloween2Loop, "halloween2"},
+    // {confettiSetup, confettiLoop, "confetti"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
     {rainbowSetup, rainbowLoop, "rainbow"},
+    {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
+    {lullabySetup, lullabyLoop, "lullaby"},
+    {nightSkySetup, nightSkyLoop, "nightSky"},
     {fireplaceSetup, fireplaceLoop, "fireplace"},
     {christmasWaveSetup, christmasWaveLoop, "christmasWave"},
     {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow"},
-    {twinkleSetup, twinkleLoop, "twinkle"},
+    // {twinkleSetup, twinkleLoop, "twinkle"},
 };
 
 String currentPatternName = "";
