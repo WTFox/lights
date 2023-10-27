@@ -9,6 +9,14 @@
 
 #define NUM_LEDS 100
 
+typedef void (*PatternFunction)();
+
+struct Pattern {
+    void (*setupFunc)(GlobalContext &);
+    void (*loopFunc)(GlobalContext &);
+    String name;
+};
+
 #endif
 
 /* void FillLEDsFromPaletteColors(CRGBPalette16 currentPalette, Context
@@ -20,35 +28,6 @@
  */
 /*         colorIndex += 3; */
 /*     } */
-/* } */
-/**/
-/* void addGlitter(fract8 chanceOfGlitter, Context &context) { */
-/*     if (random8() < chanceOfGlitter) { */
-/*         context.leds[random16(context.numLEDs)] += */
-/*             CRGB::Gray; // White is too bright */
-/*     } */
-/* } */
-/**/
-/* void christmas(Context &context) { */
-/*     FillLEDsFromPaletteColors(myChristmasPalette_p, context); */
-/*     addGlitter(30, context); */
-/* } */
-/**/
-/* void alternateChristmasColors(Context &context) { */
-/*     for (int i = 0; i < context.numLEDs; i++) { */
-/*         context.leds[i] = myChristmasPalette_p[(i + context.iteration) % 16];
- */
-/*     } */
-/*     delay(200); */
-/* } */
-/**/
-/* void rainbow(Context &context) { */
-/*     fill_rainbow(context.leds, context.numLEDs, context.hue, 7); */
-/* } */
-/**/
-/* void rainbowWithGlitter(Context &context) { */
-/*     rainbow(context); */
-/*     addGlitter(80, context); */
 /* } */
 /**/
 /* void confetti(Context &context) { */
@@ -86,47 +65,3 @@
 /*         dothue += 32; */
 /*     } */
 /* } */
-/**/
-/* void error(Context &context) { */
-/*     FastLED.setBrightness(gContext.alertBrightness); */
-/*     for (size_t i = 0; i < 2; i++) { */
-/*         for (int i = 0; i < context.numLEDs; i++) { */
-/*             if (i % 2 == 0) { */
-/*                 context.leds[i] = CRGB::Red; */
-/*             } else { */
-/*                 context.leds[i] = CRGB::White; */
-/*             } */
-/*         } */
-/*         FastLED.show(); */
-/*         delay(1000); */
-/**/
-/*         for (int i = 0; i < context.numLEDs; i++) { */
-/*             context.leds[i] = CRGB::Black; */
-/*         } */
-/*         FastLED.show(); */
-/*         delay(300); */
-/*     } */
-/* } */
-/**/
-/* void success(Context &context) { */
-/*     FastLED.setBrightness(gContext.alertBrightness); */
-/*     for (size_t i = 0; i < 2; i++) { */
-/*         for (int i = 0; i < context.numLEDs; i++) { */
-/*             context.leds[i] = CRGB::Green; */
-/*         } */
-/*         FastLED.show(); */
-/*         delay(1000); */
-/**/
-/*         for (int i = 0; i < context.numLEDs; i++) { */
-/*             context.leds[i] = CRGB::Black; */
-/*         } */
-/*         FastLED.show(); */
-/*         delay(300); */
-/*     } */
-/* } */
-/**/
-/* typedef void (*SimplePatternList[])(Context &context); */
-/* SimplePatternList gPatterns = { */
-/*     christmas, christmas, christmas, rainbow, rainbowWithGlitter, */
-/*     confetti,  sinelon,   juggle,    bpm}; */
-/**/
