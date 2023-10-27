@@ -20,6 +20,3 @@ void addGlitter(GlobalContext &context, uint8_t chanceOfGlitter) {
         context.strip.setPixelColor(random16(NUM_LEDS), 255, 255, 255);
     }
 }
-
-uint8_t randomInt() { return rand() % 101; }
-uint16_t random16(uint16_t max) { return rand() % max; }

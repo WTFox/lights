@@ -16,8 +16,9 @@ int getBrightness(String command);
 int setBrightness(String command);
 int setPatternDurationMinutes(String command);
 int toggleCyclingPatterns(String command);
+uint8_t randomInt();
+uint16_t random16(uint16_t max);
 #line 6 "/Users/anthonyfox/dev/lights/src/main.ino"
-#define NUM_LEDS 100
 #define DATA_PIN D5
 #define LED_TYPE WS2811
 
@@ -32,6 +33,8 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
+    {halloweenSetup, halloweenLoop, "halloween"},
+    {confettiSetup, confettiLoop, "confetti"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
     {rainbowSetup, rainbowLoop, "rainbow"},
     {fireplaceSetup, fireplaceLoop, "fireplace"},
@@ -44,21 +47,12 @@ String currentPatternName = "";
 
 void setup() {
     Particle.variable("currentPattern", currentPatternName);
+
     Particle.function("getBrightness", getBrightness);
     Particle.function("setBrightness", setBrightness);
     Particle.function("nextPattern", gotoNextPattern);
     Particle.function("setPatternDurationMinutes", setPatternDurationMinutes);
     Particle.function("toggleCyclingPatterns", toggleCyclingPatterns);
-
-    Particle.function("setPatternDurationMinutes", [](String command) {
-        context.patternDurationInSeconds = command.toInt() * 60 * 1000;
-        return context.patternDurationInSeconds;
-    });
-
-    Particle.function("toggleCyclingPatterns", [](String command) {
-        context.cyclePatterns = !context.cyclePatterns;
-        return context.cyclePatterns;
-    });
 
     context.strip.begin();
     context.strip.show();
@@ -103,3 +97,6 @@ int toggleCyclingPatterns(String command) {
     context.cyclePatterns = !context.cyclePatterns;
     return 1;
 }
+
+uint8_t randomInt() { return rand() % 101; }
+uint16_t random16(uint16_t max) { return rand() % max; }

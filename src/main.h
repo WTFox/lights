@@ -17,6 +17,9 @@ struct Pattern {
     String name;
 };
 
+uint8_t randomInt();
+uint16_t random16(uint16_t max);
+
 #endif
 
 /* void FillLEDsFromPaletteColors(CRGBPalette16 currentPalette, Context

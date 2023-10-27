@@ -3,7 +3,6 @@
 #include "neopixel.h"
 #include "patterns/allPatterns.h"
 
-#define NUM_LEDS 100
 #define DATA_PIN D5
 #define LED_TYPE WS2811
 
@@ -18,6 +17,9 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
+    {halloweenSetup, halloweenLoop, "halloween"},
+    {halloween2Setup, halloween2Loop, "halloween2"},
+    // {confettiSetup, confettiLoop, "confetti"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
     {rainbowSetup, rainbowLoop, "rainbow"},
     {fireplaceSetup, fireplaceLoop, "fireplace"},
@@ -80,3 +82,6 @@ int toggleCyclingPatterns(String command) {
     context.cyclePatterns = !context.cyclePatterns;
     return 1;
 }
+
+uint8_t randomInt() { return rand() % 101; }
+uint16_t random16(uint16_t max) { return rand() % max; }
