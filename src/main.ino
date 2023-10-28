@@ -1,10 +1,17 @@
-#include "GlobalContext.h"
-#include "main.h"
-#include "neopixel.h"
-#include "patterns/allPatterns.h"
+#include "main_ino.h"
 
-#define DATA_PIN D5
-#define LED_TYPE WS2811
+// IMPORTANT: Set pixel COUNT, PIN and TYPE
+#if (PLATFORM_ID == 32)
+// MOSI pin MO
+#define PIXEL_PIN SPI1
+// MOSI pin D2
+// #define PIXEL_PIN SPI1
+#else // #if (PLATFORM_ID == 32)
+#define PIXEL_PIN D5
+#endif
+
+// #define PIXEL_PIN SPI1
+#define PIXEL_TYPE WS2812B
 
 GlobalContext context = {
     .brightness = 150,
@@ -12,7 +19,7 @@ GlobalContext context = {
     .patternDurationInSeconds = 15 * 60 * 1000,
     .lastPatternChange = 0,
     .iteration = 0,
-    .strip = Adafruit_NeoPixel(NUM_LEDS, DATA_PIN, LED_TYPE),
+    .strip = Adafruit_NeoPixel(NUM_LEDS, PIXEL_PIN, PIXEL_TYPE),
     .cyclePatterns = false,
 };
 

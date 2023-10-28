@@ -2,7 +2,7 @@
 #define RAINBOWCONFETTI_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 #define RAINBOW_CONFETTI_CHANCE 5
 #define RAINBOW_CONFETTI_FADE_AMOUNT 10

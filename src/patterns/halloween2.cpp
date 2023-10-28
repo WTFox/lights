@@ -6,7 +6,10 @@ int halloween2FadeDirection[100] = {0}; // Direction for each bead.
 
 void halloween2Setup(GlobalContext &context) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
-        context.strip.setPixelColor(i, 255, 50, 0); // Set all LEDs to orange.
+        uint8_t r = 255;
+        uint8_t g = 50;
+        uint8_t b = 0;
+        context.strip.setPixelColor(i, g, r, b); // Set all LEDs to orange.
     }
     context.strip.show();
 }
@@ -33,10 +36,14 @@ void halloween2Loop(GlobalContext &context) {
         }
 
         if (halloween2FadeDirection[i] != 0) {
-            context.strip.setPixelColor(i, 0, halloween2BeadBrightness[i],
+            context.strip.setPixelColor(i, halloween2BeadBrightness[i], 0,
                                         0); // Green color.
         } else {
-            context.strip.setPixelColor(i, 255, 50, 0); // Orange color.
+            uint8_t r = 255;
+            uint8_t g = 50;
+            uint8_t b = 0;
+
+            context.strip.setPixelColor(i, g, r, b); // Orange color.
         }
     }
     context.strip.show();

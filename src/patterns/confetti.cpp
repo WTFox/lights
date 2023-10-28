@@ -24,7 +24,7 @@ void confettiLoop(GlobalContext &context) {
             byte g = random(256);
             byte b = random(256);
             confettiFadeDirection[i] = 1; // Set direction to "increasing"
-            context.strip.setPixelColor(i, r, g, b);
+            context.strip.setPixelColor(i, g, r, b);
         }
 
         if (confettiFadeDirection[i] == 1) {

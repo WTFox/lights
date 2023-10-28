@@ -6,7 +6,10 @@ int currentlyTwinkling = 0;
 
 void twinkleSetup(GlobalContext &context) {
     for (int i = 0; i < NUM_LEDS; i++) {
-        context.strip.setPixelColor(i, 0, 0, 25);
+        uint8_t r = 0;
+        uint8_t g = 0;
+        uint8_t b = 25;
+        context.strip.setPixelColor(i, g, r, b);
     }
 }
 
@@ -36,11 +39,17 @@ void twinkleLoop(GlobalContext &context) {
         }
 
         if (fadeDirection[i] != 0) {
-            context.strip.setPixelColor(i, ledBrightness[i], ledBrightness[i],
-                                        ledBrightness[i] /
-                                            2); // A white or yellowish star
+            uint8_t r = ledBrightness[i];
+            uint8_t g = ledBrightness[i];
+            uint8_t b = ledBrightness[i] / 2;
+            context.strip.setPixelColor(i, g, r,
+                                        b); // A white or yellowish star
         } else {
-            context.strip.setPixelColor(i, 0, 0, 25); // Dark blue background
+            uint8_t r = 0;
+            uint8_t g = 0;
+            uint8_t b = 25;
+
+            context.strip.setPixelColor(i, g, r, b); // Dark blue background
         }
     }
     context.strip.show();

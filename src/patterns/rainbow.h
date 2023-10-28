@@ -2,7 +2,7 @@
 #define RAINBOW_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 void rainbowSetup(GlobalContext &context);
 void rainbowLoop(GlobalContext &context);

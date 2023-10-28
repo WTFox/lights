@@ -17,12 +17,21 @@ void rainbowLoop(GlobalContext &context) {
 uint32_t Wheel(byte WheelPos, GlobalContext &context) {
     WheelPos = 255 - WheelPos;
     if (WheelPos < 85) {
-        return context.strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+        uint8_t r = 255 - WheelPos * 3;
+        uint8_t g = 0;
+        uint8_t b = WheelPos * 3;
+        return context.strip.Color(g, r, b);
     }
     if (WheelPos < 170) {
         WheelPos -= 85;
-        return context.strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+        uint8_t r = 0;
+        uint8_t g = WheelPos * 3;
+        uint8_t b = 255 - WheelPos * 3;
+        return context.strip.Color(0, g, r, b);
     }
     WheelPos -= 170;
-    return context.strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+    uint8_t r = WheelPos * 3;
+    uint8_t g = 255 - WheelPos * 3;
+    uint8_t b = 0;
+    return context.strip.Color(g, r, b);
 }

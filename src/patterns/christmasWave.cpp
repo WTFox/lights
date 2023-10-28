@@ -1,5 +1,4 @@
 #include "christmasWave.h"
-#include "math.h"
 
 #define PI 3.1415926535897932384626433832795
 #define WAVE_SPEED 1000 // Speed of the wave propagation
@@ -20,13 +19,22 @@ void christmasWaveLoop(GlobalContext &context) {
 
         if (level > 0.5) {
             // Red for the top half of the wave
-            context.strip.setPixelColor(i, context.strip.Color(255, 0, 0));
+            uint8_t r = 255;
+            uint8_t g = 0;
+            uint8_t b = 0;
+            context.strip.setPixelColor(i, context.strip.Color(g, r, b));
         } else if (level < -0.5) {
             // Green for the bottom half of the wave
-            context.strip.setPixelColor(i, context.strip.Color(0, 255, 0));
+            uint8_t r = 0;
+            uint8_t g = 255;
+            uint8_t b = 0;
+            context.strip.setPixelColor(i, context.strip.Color(g, r, b));
         } else {
             // White in the middle of the wave
-            context.strip.setPixelColor(i, context.strip.Color(255, 255, 255));
+            uint8_t r = 255;
+            uint8_t g = 255;
+            uint8_t b = 255;
+            context.strip.setPixelColor(i, context.strip.Color(g, r, b));
         }
     }
 

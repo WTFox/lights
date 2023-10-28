@@ -23,14 +23,21 @@ void festiveRainbowLoop(GlobalContext &context) {
 uint32_t festiveWheel(byte WheelPos, Adafruit_NeoPixel &strip) {
     WheelPos = 255 - WheelPos;
     if (WheelPos < 85) {
-        return strip.Color(255 - WheelPos * 3, WheelPos * 2,
-                           0); // Red to yellow gradient
+        uint8_t r = 255 - WheelPos * 3;
+        uint8_t g = WheelPos * 2;
+        uint8_t b = 0;
+        return strip.Color(g, r, b);
     }
     if (WheelPos < 170) {
         WheelPos -= 85;
-        return strip.Color(0, WheelPos * 3, 0); // Green shades
+        uint8_t r = 0;
+        uint8_t g = WheelPos * 3;
+        uint8_t b = 0;
+        return strip.Color(g, r, b); // Green shades
     }
     WheelPos -= 170;
-    return strip.Color(WheelPos * 3, 255 - WheelPos * 2,
-                       WheelPos * 2); // Yellow to red gradient
+    uint8_t r = WheelPos * 3;
+    uint8_t g = 255 - WheelPos * 2;
+    uint8_t b = WheelPos * 2;
+    return strip.Color(g, r, b); // Yellow to red gradient
 }

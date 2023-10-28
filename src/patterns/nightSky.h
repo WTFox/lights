@@ -2,7 +2,7 @@
 #define NIGHTSKY_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 #define NIGHTSKY_STAR_CHANCE                                                   \
     3 // Chance (out of 100) for a star to start twinkling

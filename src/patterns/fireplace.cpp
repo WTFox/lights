@@ -1,7 +1,5 @@
 #include "fireplace.h"
 
-#define FIRE_INTENSITY 50
-
 void fireplaceSetup(GlobalContext &context) {
     for (int i = 0; i < NUM_LEDS; i++) {
         context.strip.setPixelColor(i, 0, 0, 0);
@@ -19,7 +17,7 @@ void fireplaceLoop(GlobalContext &context) {
         r = constrain(r, 0, 255);
         g = constrain(g, 0, 255);
 
-        context.strip.setPixelColor(i, r, g, b);
+        context.strip.setPixelColor(i, g, r, b);
     }
     context.strip.show();
     delay(50); // Short delay for visual effect

@@ -2,7 +2,7 @@
 #define HALLOWEEN_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 #define HALLOWEEN_GLIMMER_CHANCE 80
 

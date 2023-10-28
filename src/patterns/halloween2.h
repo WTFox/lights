@@ -2,7 +2,7 @@
 #define HALLOWEEN2_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 #define HALLOWEEN_2_GREEN_BEAD_CHANCE 5
 #define HALLOWEEN_2_FADE_AMOUNT 5

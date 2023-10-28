@@ -2,7 +2,7 @@
 #define TWINKLE_H
 
 #include "GlobalContext.h"
-#include "main.h"
+#include "main_ino.h"
 
 #define TWINKLE_CHANCE 10
 #define FADE_AMOUNT 1
