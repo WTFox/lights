@@ -3,15 +3,19 @@
 void rainbowSetup(GlobalContext &context) {}
 
 void rainbowLoop(GlobalContext &context) {
-    uint16_t i;
+    static unsigned long lastUpdate = 0;
+    const unsigned long updateInterval =
+        20;           // Adjust this for speed of the rainbow cycle
+    static int j = 0; // This is the position in the rainbow
 
-    for (i = 0; i < context.strip.numPixels(); i++) {
-        context.strip.setPixelColor(
-            i, Wheel((i + context.iteration) & 255, context));
+    if (millis() - lastUpdate > updateInterval) {
+        for (int i = 0; i < context.strip.numPixels(); i++) {
+            context.strip.setPixelColor(i, Wheel((i + j) & 255, context));
+        }
+        j = (j + 1) % 256; // Increment j
+        lastUpdate = millis();
+        context.strip.show();
     }
-
-    context.strip.show();
-    delay(20);
 }
 
 uint32_t Wheel(byte WheelPos, GlobalContext &context) {

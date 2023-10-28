@@ -12,7 +12,6 @@
 
 // #define PIXEL_PIN SPI1
 #define PIXEL_TYPE WS2812B
-
 GlobalContext context = {
     .brightness = 150,
     .currentPattern = 0,
@@ -24,11 +23,11 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
+    {rainbowSetup, rainbowLoop, "rainbow"},
     {halloweenSetup, halloweenLoop, "halloween"},
     {halloween2Setup, halloween2Loop, "halloween2"},
     // {confettiSetup, confettiLoop, "confetti"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
-    {rainbowSetup, rainbowLoop, "rainbow"},
     {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
     {lullabySetup, lullabyLoop, "lullaby"},
     {nightSkySetup, nightSkyLoop, "nightSky"},
@@ -66,8 +65,8 @@ void loop() {
         }
     }
 
-    context.iteration++;
     currentPatternName = patterns[context.currentPattern].name;
+    context.iteration++;
 }
 
 int gotoNextPattern(String command) {

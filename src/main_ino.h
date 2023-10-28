@@ -24,5 +24,4 @@ struct Pattern {
 uint8_t randomInt();
 uint16_t random16(uint16_t max);
 
-
 #endif

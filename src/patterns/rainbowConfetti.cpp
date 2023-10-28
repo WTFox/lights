@@ -34,18 +34,27 @@ void rainbowConfettiSetup(GlobalContext &context) {
 }
 
 void rainbowConfettiLoop(GlobalContext &context) {
+    static unsigned long lastConfettiUpdate = 0;
+    const unsigned long confettiUpdateInterval = 50; // adjust as needed
+
     for (int i = 0; i < context.strip.numPixels(); i++) {
-        if (random(100) < RAINBOW_CONFETTI_CHANCE) {
-            confettiColorChange[i] =
-                (confettiColorChange[i] + random(5, 20)) % 256;
-            context.strip.setPixelColor(i,
-                                        Wheel(context, confettiColorChange[i]));
-        } else {
-            context.strip.setPixelColor(
-                i, Wheel(context, (i * 256 / context.strip.numPixels() +
-                                   confettiColorChange[i]) &
-                                      255));
-        }
+        // Always set the regular rainbow pattern
+        context.strip.setPixelColor(
+            i, Wheel(context, (i * 256 / context.strip.numPixels()) & 255));
     }
+
+    // Check if it's time to update the confetti
+    if (millis() - lastConfettiUpdate > confettiUpdateInterval) {
+        for (int i = 0; i < context.strip.numPixels(); i++) {
+            if (random(100) < RAINBOW_CONFETTI_CHANCE) {
+                confettiColorChange[i] =
+                    (confettiColorChange[i] + random(5, 20)) % 256;
+                context.strip.setPixelColor(
+                    i, Wheel(context, confettiColorChange[i]));
+            }
+        }
+        lastConfettiUpdate = millis();
+    }
+
     context.strip.show();
 }
