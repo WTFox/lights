@@ -5,7 +5,6 @@
 #include "main_ino.h"
 #include "rainbow.h"
 
-void addGlitter(GlobalContext &context, uint8_t chanceOfGlitter);
 
 void rainbowWithGlitterSetup(GlobalContext &context);
 void rainbowWithGlitterLoop(GlobalContext &context);

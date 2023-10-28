@@ -13,6 +13,10 @@
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 #endif
 
+#ifndef PI
+#define PI 3.1415926535897932384626433832795
+#endif
+
 typedef void (*PatternFunction)();
 
 struct Pattern {

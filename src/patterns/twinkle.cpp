@@ -1,56 +1,52 @@
 #include "twinkle.h"
 
-int ledBrightness[NUM_LEDS] = {0};
-int fadeDirection[NUM_LEDS] = {0};
-int currentlyTwinkling = 0;
+#define SOFT_WHITE_LEVEL 30
+#define MAX_BRIGHTNESS 255
+#define MIN_BRIGHTNESS SOFT_WHITE_LEVEL
+
+static uint8_t ledState[NUM_LEDS]; // To keep track if LED is ON or OFF
+static int8_t brightnessDirection[NUM_LEDS]; // Direction to adjust brightness: 1 for
+                                   // increasing, -1 for decreasing
+static uint8_t targetBrightness[NUM_LEDS]; // Target brightness when LED is ON
 
 void twinkleSetup(GlobalContext &context) {
-    for (int i = 0; i < NUM_LEDS; i++) {
-        uint8_t r = 0;
-        uint8_t g = 0;
-        uint8_t b = 25;
-        context.strip.setPixelColor(i, g, r, b);
+    for (int i = 0; i < context.strip.numPixels(); i++) {
+        ledState[i] = random(2); // Randomly set initial state
+        brightnessDirection[i] = 1;
+        targetBrightness[i] = random(SOFT_WHITE_LEVEL, MAX_BRIGHTNESS);
+        context.strip.setPixelColor(
+            i,
+            context.strip.Color(0, 0, SOFT_WHITE_LEVEL)); // Initial soft white
     }
+    context.strip.show();
 }
 
 void twinkleLoop(GlobalContext &context) {
-    if (currentlyTwinkling < MAX_TWINKLING && random(100) < TWINKLE_CHANCE) {
+    for (int i = 0; i < context.strip.numPixels(); i++) {
+        uint32_t currentColor = context.strip.getPixelColor(i);
+        uint8_t currentBrightness =
+            currentColor & 0xFF; // Extract the blue channel for brightness
 
-        int randLed = random(NUM_LEDS);
-        if (fadeDirection[randLed] == 0) {
-            fadeDirection[randLed] = 1;
-            currentlyTwinkling++;
+        if (ledState[i] == 1) { // If LED is twinkling
+            currentBrightness += brightnessDirection[i];
+
+            if (currentBrightness >= targetBrightness[i]) {
+                brightnessDirection[i] = -1; // Start dimming
+            } else if (currentBrightness <= SOFT_WHITE_LEVEL) {
+                brightnessDirection[i] = 1; // Start brightening
+                targetBrightness[i] =
+                    random(SOFT_WHITE_LEVEL,
+                           MAX_BRIGHTNESS); // Get new target brightness
+            }
+
+            context.strip.setPixelColor(
+                i, context.strip.Color(0, 0, currentBrightness));
+        } else if (random(100) < 2) { // 2% chance to start twinkling
+            ledState[i] = 1;
+            targetBrightness[i] = random(SOFT_WHITE_LEVEL, MAX_BRIGHTNESS);
         }
     }
 
-    for (int i = 0; i < NUM_LEDS; i++) {
-        if (fadeDirection[i] == 1) {
-            ledBrightness[i] += FADE_AMOUNT;
-            if (ledBrightness[i] >= MAX_BRIGHTNESS) {
-                fadeDirection[i] = -1;
-            }
-        } else if (fadeDirection[i] == -1) {
-            ledBrightness[i] -= FADE_AMOUNT;
-            if (ledBrightness[i] <= 0) {
-                fadeDirection[i] = 0;
-                ledBrightness[i] = 0;
-                currentlyTwinkling--;
-            }
-        }
-
-        if (fadeDirection[i] != 0) {
-            uint8_t r = ledBrightness[i];
-            uint8_t g = ledBrightness[i];
-            uint8_t b = ledBrightness[i] / 2;
-            context.strip.setPixelColor(i, g, r,
-                                        b); // A white or yellowish star
-        } else {
-            uint8_t r = 0;
-            uint8_t g = 0;
-            uint8_t b = 25;
-
-            context.strip.setPixelColor(i, g, r, b); // Dark blue background
-        }
-    }
     context.strip.show();
+    delay(20); // You can adjust this for faster/slower twinkling
 }

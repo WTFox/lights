@@ -23,18 +23,18 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
-    {rainbowSetup, rainbowLoop, "rainbow"},
     {halloweenSetup, halloweenLoop, "halloween"},
     {halloween2Setup, halloween2Loop, "halloween2"},
-    // {confettiSetup, confettiLoop, "confetti"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
-    {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
-    {lullabySetup, lullabyLoop, "lullaby"},
+    {rainbowSetup, rainbowLoop, "rainbow"},
     {nightSkySetup, nightSkyLoop, "nightSky"},
     {fireplaceSetup, fireplaceLoop, "fireplace"},
     {christmasWaveSetup, christmasWaveLoop, "christmasWave"},
     {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow"},
+    // {lullabySetup, lullabyLoop, "lullaby"},
     // {twinkleSetup, twinkleLoop, "twinkle"},
+    // {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
+    // {confettiSetup, confettiLoop, "confetti"},
 };
 
 String currentPatternName = "";
@@ -47,16 +47,16 @@ void setup() {
     Particle.function("nextPattern", gotoNextPattern);
     Particle.function("setPatternDurationMinutes", setPatternDurationMinutes);
     Particle.function("toggleCyclingPatterns", toggleCyclingPatterns);
+    Particle.function("toggleNightTime", toggleNightTime);
 
     context.strip.begin();
     context.strip.show();
+    context.strip.setBrightness(context.brightness);
     patterns[context.currentPattern].setupFunc(context);
 }
 
 void loop() {
-    context.strip.setBrightness(context.brightness);
     patterns[context.currentPattern].loopFunc(context);
-
     if (context.cyclePatterns) {
         if (millis() - context.lastPatternChange >=
             static_cast<unsigned long>(context.patternDurationInSeconds)) {
@@ -79,6 +79,7 @@ int gotoNextPattern(String command) {
 int getBrightness(String command) { return context.brightness; }
 int setBrightness(String command) {
     context.brightness = command.toInt();
+    context.strip.setBrightness(context.brightness);
     return context.brightness;
 }
 
@@ -89,6 +90,11 @@ int setPatternDurationMinutes(String command) {
 
 int toggleCyclingPatterns(String command) {
     context.cyclePatterns = !context.cyclePatterns;
+    return 1;
+}
+
+int toggleNightTime(String command) {
+    context.nightTime = !context.nightTime;
     return 1;
 }
 

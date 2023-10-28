@@ -1,22 +1,24 @@
 #include "rainbowWithGlitter.h"
 
+#define chanceOfGlitter 10
+
 void rainbowWithGlitterSetup(GlobalContext &context) {}
 
 void rainbowWithGlitterLoop(GlobalContext &context) {
-    uint16_t i;
+    uint16_t i, j;
 
-    for (i = 0; i < context.strip.numPixels(); i++) {
-        context.strip.setPixelColor(
-            i, Wheel((i + context.iteration) & 255, context));
-    }
+    for (j = 0; j < 256; j++) { // 1 cycle of all colors on wheel
+        for (i = 0; i < context.strip.numPixels(); i++) {
+            context.strip.setPixelColor(
+                i, Wheel(((i * 256 / context.strip.numPixels()) + j) & 255,
+                         context));
+        }
 
-    addGlitter(context, 5);
-    context.strip.show();
-    delay(20);
-}
+        if (randomInt() < chanceOfGlitter) {
+            context.strip.setPixelColor(random16(NUM_LEDS), 255, 255, 255);
+        }
 
-void addGlitter(GlobalContext &context, uint8_t chanceOfGlitter) {
-    if (randomInt() < chanceOfGlitter) {
-        context.strip.setPixelColor(random16(NUM_LEDS), 255, 255, 255);
+        context.strip.show();
+        delay(20);
     }
 }

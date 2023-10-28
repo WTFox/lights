@@ -1,6 +1,5 @@
 #include "christmasWave.h"
 
-#define PI 3.1415926535897932384626433832795
 #define WAVE_SPEED 1000 // Speed of the wave propagation
 #define WAVE_WIDTH 3    // Width of the wave
 
