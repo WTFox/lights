@@ -1,10 +1,11 @@
 #include "rainbow_glitter.h"
 
+// TODO: move this to PatternArgs
 #define chanceOfGlitter 10
 
-void rainbowWithGlitterSetup(GlobalContext &context) {}
+void rainbowWithGlitterSetup(GlobalContext &context, PatternArgs &args) {}
 
-void rainbowWithGlitterLoop(GlobalContext &context) {
+void rainbowWithGlitterLoop(GlobalContext &context, PatternArgs &args) {
     uint16_t i, j;
 
     for (j = 0; j < 256; j++) { // 1 cycle of all colors on wheel

@@ -1,8 +1,8 @@
-#ifndef CONFETTI_H
-#define CONFETTI_H
+#pragma once
 
 #include "global_context.h"
 #include "main_ino.h"
+#include "patterns.h"
 
 #define CONFETTI_UPDATE_INTERVAL 200 // Update interval in milliseconds
 #define CONFETTI_CHANCE                                                        \
@@ -12,7 +12,5 @@
 extern int confettiBrightness[];
 extern int confettiFadeDirection[];
 
-void confettiSetup(GlobalContext &context);
-void confettiLoop(GlobalContext &context);
-
-#endif
+void confettiSetup(GlobalContext &context, PatternArgs &args);
+void confettiLoop(GlobalContext &context, PatternArgs &args);

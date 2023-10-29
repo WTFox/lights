@@ -19,11 +19,11 @@ uint32_t GetCyberColor(GlobalContext &context, uint8_t index) {
     return CyberColors[index % numColors];
 }
 
-void cyberpunkCycleSetup(GlobalContext &context) {
+void cyberpunkCycleSetup(GlobalContext &context, PatternArgs &args) {
     // Initial setup can be empty for this pattern.
 }
 
-void cyberpunkCycleLoop(GlobalContext &context) {
+void cyberpunkCycleLoop(GlobalContext &context, PatternArgs &args) {
     uint16_t i, j;
 
     for (j = 0; j < 256 * numColors; j++) {

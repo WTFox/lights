@@ -4,7 +4,7 @@ int nightSkyBrightness[100] = {
     0}; // Adjust array size if your strip has more or less LEDs
 int nightSkyFadeDirection[100] = {0};
 
-void nightSkySetup(GlobalContext &context) {
+void nightSkySetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         context.strip.setPixelColor(
             i, 0, 0, NIGHTSKY_MIN_BRIGHTNESS); // Soft ambient blue
@@ -14,7 +14,7 @@ void nightSkySetup(GlobalContext &context) {
     context.strip.show();
 }
 
-void nightSkyLoop(GlobalContext &context) {
+void nightSkyLoop(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         if (random(100) < NIGHTSKY_STAR_CHANCE &&
             nightSkyFadeDirection[i] == 0) {

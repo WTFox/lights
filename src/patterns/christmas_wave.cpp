@@ -3,13 +3,13 @@
 #define WAVE_SPEED 1000 // Speed of the wave propagation
 #define WAVE_WIDTH 3    // Width of the wave
 
-void christmasWaveSetup(GlobalContext &context) {
+void christmasWaveSetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < NUM_LEDS; i++) {
         context.strip.setPixelColor(i, 0, 0, 0);
     }
 }
 
-void christmasWaveLoop(GlobalContext &context) {
+void christmasWaveLoop(GlobalContext &context, PatternArgs &args) {
     static uint16_t pos = 0; // Current position in the wave
 
     for (uint16_t i = 0; i < context.strip.numPixels(); i++) {

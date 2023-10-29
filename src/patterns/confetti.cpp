@@ -3,14 +3,14 @@
 int confettiBrightness[NUM_LEDS] = {0};
 int confettiFadeDirection[NUM_LEDS] = {0};
 
-void confettiSetup(GlobalContext &context) {
+void confettiSetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         context.strip.setPixelColor(i, 0, 0, 0); // Start with all LEDs off
     }
     context.strip.show();
 }
 
-void confettiLoop(GlobalContext &context) {
+void confettiLoop(GlobalContext &context, PatternArgs &args) {
     static unsigned long lastUpdate = 0; // Stores the last update timestamp
     if (millis() - lastUpdate < CONFETTI_UPDATE_INTERVAL) {
         return; // If it hasn't been long enough, just return without updating

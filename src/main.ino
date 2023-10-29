@@ -1,17 +1,13 @@
 #include "main_ino.h"
 
-// IMPORTANT: Set pixel COUNT, PIN and TYPE
+#define PIXEL_TYPE WS2812B
 #if (PLATFORM_ID == 32)
-// MOSI pin MO
+// Photon2
 #define PIXEL_PIN SPI1
-// MOSI pin D2
-// #define PIXEL_PIN SPI1
-#else // #if (PLATFORM_ID == 32)
+#else
 #define PIXEL_PIN D5
 #endif
 
-// #define PIXEL_PIN SPI1
-#define PIXEL_TYPE WS2812B
 GlobalContext context = {
     .brightness = 150,
     .currentPattern = 0,
@@ -23,18 +19,38 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
-    {halloweenSetup, halloweenLoop, "halloween"},
-    {halloween2Setup, halloween2Loop, "halloween2"},
-    {fireplaceSetup, fireplaceLoop, "fireplace"},
-    {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
-    {rainbowSetup, rainbowLoop, "rainbow"},
-    {nightSkySetup, nightSkyLoop, "nightSky"},
-    // {cyberpunkCycleSetup, cyberpunkCycleLoop, "cyberpunkCycle"},
-    // {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow"},
-    // {christmasWaveSetup, christmasWaveLoop, "christmasWave"},
-    // {lullabySetup, lullabyLoop, "lullaby"},
-    // {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
-    // {confettiSetup, confettiLoop, "confetti"},
+    {
+        coloredSparkleSetup,
+        coloredSparkleLoop,
+        "coloredSparkle",
+        PatternArgs{
+            .primary_color = 0xff3300,
+            .sparkle_color = 0x00ff00,
+            .with_sparkles = true,
+            .chance_of_sparkle = 80,
+        },
+    },
+    {
+        coloredSparkleSetup,
+        coloredSparkleLoop,
+        "coloredSparkle2",
+        PatternArgs{
+            .primary_color = 0x0011ff,
+            .sparkle_color = 0xff00a6,
+            .with_sparkles = true,
+            .chance_of_sparkle = 80,
+        },
+    },
+    {halloween2Setup, halloween2Loop, "halloween2", {}},
+    // {fireplaceSetup, fireplaceLoop, "fireplace", {}},
+    // {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter",
+    // {}}, {rainbowSetup, rainbowLoop, "rainbow", {}}, {nightSkySetup,
+    // nightSkyLoop, "nightSky", {}}, {cyberpunkCycleSetup, cyberpunkCycleLoop,
+    // "cyberpunkCycle", {}}, {festiveRainbowSetup, festiveRainbowLoop,
+    // "festiveRainbow", {}}, {christmasWaveSetup, christmasWaveLoop,
+    // "christmasWave", {}}, {lullabySetup, lullabyLoop, "lullaby", {}},
+    // {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti", {}},
+    // {confettiSetup, confettiLoop, "confetti", {}},
 };
 
 String currentPatternName = "";
@@ -52,11 +68,13 @@ void setup() {
     context.strip.begin();
     context.strip.show();
     context.strip.setBrightness(context.brightness);
-    patterns[context.currentPattern].setupFunc(context);
+    patterns[context.currentPattern].setupFunc(
+        context, patterns[context.currentPattern].args);
 }
 
 void loop() {
-    patterns[context.currentPattern].loopFunc(context);
+    patterns[context.currentPattern].loopFunc(
+        context, patterns[context.currentPattern].args);
     if (context.cyclePatterns) {
         if (millis() - context.lastPatternChange >=
             static_cast<unsigned long>(context.patternDurationInSeconds)) {
@@ -72,7 +90,8 @@ void loop() {
 int gotoNextPattern(String command) {
     context.currentPattern =
         (context.currentPattern + 1) % ARRAY_SIZE(patterns);
-    patterns[context.currentPattern].setupFunc(context);
+    patterns[context.currentPattern].setupFunc(
+        context, patterns[context.currentPattern].args);
     return 1;
 }
 

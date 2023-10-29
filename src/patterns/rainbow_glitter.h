@@ -1,11 +1,8 @@
-#ifndef RAINBOW_GLITTER_H
-#define RAINBOW_GLITTER_H
+#pragma once
 
 #include "global_context.h"
 #include "main_ino.h"
 #include "rainbow.h"
 
-void rainbowWithGlitterSetup(GlobalContext &context);
-void rainbowWithGlitterLoop(GlobalContext &context);
-
-#endif
+void rainbowWithGlitterSetup(GlobalContext &context, PatternArgs &args);
+void rainbowWithGlitterLoop(GlobalContext &context, PatternArgs &args);

@@ -2,12 +2,12 @@
 
 #define DELAY_TIME 20 // Speed of the rainbow cycle
 
-void festiveRainbowSetup(GlobalContext &context) {
+void festiveRainbowSetup(GlobalContext &context, PatternArgs &args) {
     context.strip.begin();
     context.strip.show(); // Initialize all pixels to 'off'
 }
 
-void festiveRainbowLoop(GlobalContext &context) {
+void festiveRainbowLoop(GlobalContext &context, PatternArgs &args) {
     uint16_t i, j;
 
     for (j = 0; j < 256; j++) {

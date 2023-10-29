@@ -1,8 +1,8 @@
 #include "rainbow.h"
 
-void rainbowSetup(GlobalContext &context) {}
+void rainbowSetup(GlobalContext &context, PatternArgs &args) {}
 
-void rainbowLoop(GlobalContext &context) {
+void rainbowLoop(GlobalContext &context, PatternArgs &args) {
     uint16_t i, j;
 
     for (j = 0; j < 256; j++) { // 1 cycle of all colors on wheel

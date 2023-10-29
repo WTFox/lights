@@ -1,7 +1,7 @@
-#ifndef GLOBAL_CONTEXT_H
-#define GLOBAL_CONTEXT_H
+#pragma once
 
 #include "neopixel.h"
+
 struct GlobalContext {
     int brightness;
     int nightTimeBrightness;
@@ -13,5 +13,3 @@ struct GlobalContext {
     bool cyclePatterns;
     bool nightTime;
 };
-
-#endif

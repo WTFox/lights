@@ -4,7 +4,7 @@ int halloween2BeadBrightness[100] = {
     0}; // Assuming a strip size of 100, adjust if different.
 int halloween2FadeDirection[100] = {0}; // Direction for each bead.
 
-void halloween2Setup(GlobalContext &context) {
+void halloween2Setup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         uint8_t r = 255;
         uint8_t g = 50;
@@ -14,7 +14,7 @@ void halloween2Setup(GlobalContext &context) {
     context.strip.show();
 }
 
-void halloween2Loop(GlobalContext &context) {
+void halloween2Loop(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         if (halloween2FadeDirection[i] == 0 &&
             random(100) < HALLOWEEN_2_GREEN_BEAD_CHANCE) {

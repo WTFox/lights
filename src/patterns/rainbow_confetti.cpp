@@ -25,7 +25,7 @@ uint32_t Wheel(GlobalContext &context, byte WheelPos) {
     return context.strip.Color(g, r, b);
 }
 
-void rainbowConfettiSetup(GlobalContext &context) {
+void rainbowConfettiSetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
         context.strip.setPixelColor(
             i, Wheel(context, (i * 256 / context.strip.numPixels()) & 255));
@@ -33,7 +33,7 @@ void rainbowConfettiSetup(GlobalContext &context) {
     context.strip.show();
 }
 
-void rainbowConfettiLoop(GlobalContext &context) {
+void rainbowConfettiLoop(GlobalContext &context, PatternArgs &args) {
     static unsigned long lastConfettiUpdate = 0;
     const unsigned long confettiUpdateInterval = 50; // adjust as needed
 

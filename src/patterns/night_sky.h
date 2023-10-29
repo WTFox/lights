@@ -1,5 +1,4 @@
-#ifndef NIGHTSKY_H
-#define NIGHTSKY_H
+#pragma once
 
 #include "global_context.h"
 #include "main_ino.h"
@@ -13,7 +12,5 @@
 extern int nightSkyBrightness[];
 extern int nightSkyFadeDirection[];
 
-void nightSkySetup(GlobalContext &context);
-void nightSkyLoop(GlobalContext &context);
-
-#endif
+void nightSkySetup(GlobalContext &context, PatternArgs &args);
+void nightSkyLoop(GlobalContext &context, PatternArgs &args);

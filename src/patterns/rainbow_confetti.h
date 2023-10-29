@@ -1,5 +1,4 @@
-#ifndef RAINBOWCONFETTI_H
-#define RAINBOWCONFETTI_H
+#pragma once
 
 #include "global_context.h"
 #include "main_ino.h"
@@ -9,7 +8,5 @@
 
 extern int confettiColorChange[];
 
-void rainbowConfettiSetup(GlobalContext &context);
-void rainbowConfettiLoop(GlobalContext &context);
-
-#endif
+void rainbowConfettiSetup(GlobalContext &context, PatternArgs &args);
+void rainbowConfettiLoop(GlobalContext &context, PatternArgs &args);

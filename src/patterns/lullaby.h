@@ -10,7 +10,7 @@
 
 extern int lullabyFadeDirection;
 
-void lullabySetup(GlobalContext &context);
-void lullabyLoop(GlobalContext &context);
+void lullabySetup(GlobalContext &context, PatternArgs &args);
+void lullabyLoop(GlobalContext &context, PatternArgs &args);
 
 #endif

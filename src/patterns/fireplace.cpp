@@ -1,12 +1,12 @@
 #include "fireplace.h"
 
-void fireplaceSetup(GlobalContext &context) {
+void fireplaceSetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < NUM_LEDS; i++) {
         context.strip.setPixelColor(i, 0, 0, 0);
     }
 }
 
-void fireplaceLoop(GlobalContext &context) {
+void fireplaceLoop(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < NUM_LEDS; i++) {
         int flicker = random(0, FIRE_INTENSITY);
         int r = 255 - flicker;

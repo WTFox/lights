@@ -13,7 +13,7 @@ extern int
     halloween2FadeDirection[]; // Direction in which the bead is currently
                                // fading: 1 for in, -1 for out, 0 for no fade.
 
-void halloween2Setup(GlobalContext &context);
-void halloween2Loop(GlobalContext &context);
+void halloween2Setup(GlobalContext &context, PatternArgs &args);
+void halloween2Loop(GlobalContext &context, PatternArgs &args);
 
 #endif
