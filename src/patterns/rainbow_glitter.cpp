@@ -1,4 +1,4 @@
-#include "rainbowWithGlitter.h"
+#include "rainbow_glitter.h"
 
 #define chanceOfGlitter 10
 

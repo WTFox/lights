@@ -1,7 +1,7 @@
 #ifndef RAINBOWCONFETTI_H
 #define RAINBOWCONFETTI_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define RAINBOW_CONFETTI_CHANCE 5

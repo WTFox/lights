@@ -1,7 +1,7 @@
 #ifndef FIREPLACE_H
 #define FIREPLACE_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define FIRE_INTENSITY 75

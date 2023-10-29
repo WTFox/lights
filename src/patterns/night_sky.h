@@ -1,7 +1,7 @@
 #ifndef NIGHTSKY_H
 #define NIGHTSKY_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define NIGHTSKY_STAR_CHANCE                                                   \

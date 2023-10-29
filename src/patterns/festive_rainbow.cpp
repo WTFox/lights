@@ -1,4 +1,4 @@
-#include "festiveRainbow.h"
+#include "festive_rainbow.h"
 
 #define DELAY_TIME 20 // Speed of the rainbow cycle
 

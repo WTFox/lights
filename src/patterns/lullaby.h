@@ -1,7 +1,7 @@
 #ifndef LULLABY_H
 #define LULLABY_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define LULLABY_MAX_BRIGHTNESS 150

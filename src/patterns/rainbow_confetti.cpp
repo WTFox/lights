@@ -1,4 +1,4 @@
-#include "rainbowConfetti.h"
+#include "rainbow_confetti.h"
 
 // Adjust array size to match your strip's LED count
 int confettiColorChange[100] = {0};

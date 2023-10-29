@@ -25,14 +25,14 @@ GlobalContext context = {
 Pattern patterns[] = {
     {halloweenSetup, halloweenLoop, "halloween"},
     {halloween2Setup, halloween2Loop, "halloween2"},
+    {fireplaceSetup, fireplaceLoop, "fireplace"},
     {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter"},
     {rainbowSetup, rainbowLoop, "rainbow"},
     {nightSkySetup, nightSkyLoop, "nightSky"},
-    {fireplaceSetup, fireplaceLoop, "fireplace"},
-    {christmasWaveSetup, christmasWaveLoop, "christmasWave"},
-    {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow"},
+    // {cyberpunkCycleSetup, cyberpunkCycleLoop, "cyberpunkCycle"},
+    // {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow"},
+    // {christmasWaveSetup, christmasWaveLoop, "christmasWave"},
     // {lullabySetup, lullabyLoop, "lullaby"},
-    // {twinkleSetup, twinkleLoop, "twinkle"},
     // {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti"},
     // {confettiSetup, confettiLoop, "confetti"},
 };
@@ -76,6 +76,7 @@ int gotoNextPattern(String command) {
     return 1;
 }
 
+// region ParticleFunctions
 int getBrightness(String command) { return context.brightness; }
 int setBrightness(String command) {
     context.brightness = command.toInt();
@@ -97,6 +98,7 @@ int toggleNightTime(String command) {
     context.nightTime = !context.nightTime;
     return 1;
 }
+// endregion
 
 uint8_t randomInt() { return rand() % 101; }
 uint16_t random16(uint16_t max) { return rand() % max; }

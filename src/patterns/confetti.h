@@ -1,7 +1,7 @@
 #ifndef CONFETTI_H
 #define CONFETTI_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define CONFETTI_UPDATE_INTERVAL 200 // Update interval in milliseconds

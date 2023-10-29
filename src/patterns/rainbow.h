@@ -1,7 +1,7 @@
 #ifndef RAINBOW_H
 #define RAINBOW_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 void rainbowSetup(GlobalContext &context);

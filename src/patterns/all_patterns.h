@@ -1,17 +1,17 @@
 #ifndef ALL_PATTERNS_H
 #define ALL_PATTERNS_H
 
-#include "christmasWave.h"
+#include "christmas_wave.h"
 #include "confetti.h"
-#include "festiveRainbow.h"
+#include "cyberpunk_cycle.h"
+#include "festive_rainbow.h"
 #include "fireplace.h"
 #include "halloween.h"
 #include "halloween2.h"
 #include "lullaby.h"
-#include "nightSky.h"
+#include "night_sky.h"
 #include "rainbow.h"
-#include "rainbowConfetti.h"
-#include "rainbowWithGlitter.h"
-#include "twinkle.h"
+#include "rainbow_confetti.h"
+#include "rainbow_glitter.h"
 
 #endif

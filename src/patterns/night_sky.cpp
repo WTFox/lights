@@ -1,4 +1,4 @@
-#include "nightSky.h"
+#include "night_sky.h"
 
 int nightSkyBrightness[100] = {
     0}; // Adjust array size if your strip has more or less LEDs

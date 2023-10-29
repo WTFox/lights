@@ -5,15 +5,15 @@
 #define NUM_LEDS 100
 #endif
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "neopixel.h"
-#include "patterns/allPatterns.h"
+#include "patterns/all_patterns.h"
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 #endif
 
-#ifndef PI
+#ifndef MATH_FUNCTIONS
 #define PI 3.1415926535897932384626433832795
 #endif
 

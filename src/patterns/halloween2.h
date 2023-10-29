@@ -1,7 +1,7 @@
 #ifndef HALLOWEEN2_H
 #define HALLOWEEN2_H
 
-#include "GlobalContext.h"
+#include "global_context.h"
 #include "main_ino.h"
 
 #define HALLOWEEN_2_GREEN_BEAD_CHANCE 5
