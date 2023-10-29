@@ -19,29 +19,39 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
+    // {
+    //     coloredSparkleSetup,
+    //     coloredSparkleLoop,
+    //     "coloredSparkle",
+    //     PatternArgs{
+    //         .primary_color = 0xff3300,
+    //         .sparkle_color = 0x00ff00,
+    //         .with_sparkles = true,
+    //         .chance_of_sparkle = 80,
+    //     },
+    // },
+    // {
+    //     coloredSparkleSetup,
+    //     coloredSparkleLoop,
+    //     "coloredSparkle2",
+    //     PatternArgs{
+    //         .primary_color = 0x0011ff,
+    //         .sparkle_color = 0xff00a6,
+    //         .with_sparkles = true,
+    //         .chance_of_sparkle = 80,
+    //     },
+    // },
     {
-        coloredSparkleSetup,
-        coloredSparkleLoop,
-        "coloredSparkle",
+        coloredSparkleFadeSetup,
+        coloredSparkleFadeLoop,
+        "coloredSparkleFade",
         PatternArgs{
             .primary_color = 0xff3300,
             .sparkle_color = 0x00ff00,
             .with_sparkles = true,
-            .chance_of_sparkle = 80,
+            .chance_of_sparkle = 5,
         },
     },
-    {
-        coloredSparkleSetup,
-        coloredSparkleLoop,
-        "coloredSparkle2",
-        PatternArgs{
-            .primary_color = 0x0011ff,
-            .sparkle_color = 0xff00a6,
-            .with_sparkles = true,
-            .chance_of_sparkle = 80,
-        },
-    },
-    {halloween2Setup, halloween2Loop, "halloween2", {}},
     // {fireplaceSetup, fireplaceLoop, "fireplace", {}},
     // {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter",
     // {}}, {rainbowSetup, rainbowLoop, "rainbow", {}}, {nightSkySetup,

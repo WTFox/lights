@@ -27,11 +27,11 @@ struct Color {
 
 #include "patterns/christmas_wave.h"
 #include "patterns/colored_sparkle.h"
+#include "patterns/colored_sparkle_fade.h"
 #include "patterns/confetti.h"
 #include "patterns/cyberpunk_cycle.h"
 #include "patterns/festive_rainbow.h"
 #include "patterns/fireplace.h"
-#include "patterns/halloween2.h"
 #include "patterns/lullaby.h"
 #include "patterns/night_sky.h"
 #include "patterns/rainbow.h"
