@@ -1,13 +1,12 @@
 #include "night_sky.h"
 
-int nightSkyBrightness[100] = {
-    0}; // Adjust array size if your strip has more or less LEDs
-int nightSkyFadeDirection[100] = {0};
+int nightSkyBrightness[NUM_LEDS] = {0};
+int nightSkyFadeDirection[NUM_LEDS] = {0};
 
 void nightSkySetup(GlobalContext &context, PatternArgs &args) {
     for (int i = 0; i < context.strip.numPixels(); i++) {
-        context.strip.setPixelColor(
-            i, 0, 0, NIGHTSKY_MIN_BRIGHTNESS); // Soft ambient blue
+        // Soft ambient blue
+        context.strip.setPixelColor(i, 0, 0, NIGHTSKY_MIN_BRIGHTNESS);
         nightSkyBrightness[i] = NIGHTSKY_MIN_BRIGHTNESS;
         nightSkyFadeDirection[i] = 0;
     }
@@ -37,5 +36,5 @@ void nightSkyLoop(GlobalContext &context, PatternArgs &args) {
     }
 
     context.strip.show();
-    delay(50); // Adjust to slow down or speed up the twinkling effect.
+    delay(50);
 }

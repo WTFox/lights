@@ -12,8 +12,8 @@ void coloredSparkleFadeSetup(GlobalContext &context, PatternArgs &args) {
 }
 
 void coloredSparkleFadeLoop(GlobalContext &context, PatternArgs &args) {
-    Color color = Color(args.primary_color);
-    Color secondary_color = Color(args.sparkle_color);
+    Color primaryColor = Color(args.primary_color);
+    Color secondaryColor = Color(args.sparkle_color);
 
     for (int i = 0; i < context.strip.numPixels(); i++) {
         if (fadeDirection[i] == 0 && random(100) < args.chance_of_sparkle) {
@@ -33,11 +33,17 @@ void coloredSparkleFadeLoop(GlobalContext &context, PatternArgs &args) {
             }
         }
 
-        if (fadeDirection[i] != 0) {
-            context.strip.setPixelColor(i, beadBrightness[i], 0, 0);
-        } else {
-            context.strip.setPixelColor(i, color.g, color.r, color.b);
-        }
+        uint8_t interpR = (primaryColor.r * (255 - beadBrightness[i]) +
+                           secondaryColor.r * beadBrightness[i]) /
+                          255;
+        uint8_t interpG = (primaryColor.g * (255 - beadBrightness[i]) +
+                           secondaryColor.g * beadBrightness[i]) /
+                          255;
+        uint8_t interpB = (primaryColor.b * (255 - beadBrightness[i]) +
+                           secondaryColor.b * beadBrightness[i]) /
+                          255;
+
+        context.strip.setPixelColor(i, interpG, interpR, interpB);
     }
     context.strip.show();
     delay(50);

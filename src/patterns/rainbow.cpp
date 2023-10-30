@@ -5,14 +5,18 @@ void rainbowSetup(GlobalContext &context, PatternArgs &args) {}
 void rainbowLoop(GlobalContext &context, PatternArgs &args) {
     uint16_t i, j;
 
-    for (j = 0; j < 256; j++) { // 1 cycle of all colors on wheel
+    for (j = 0; j < 256; j++) {
         for (i = 0; i < context.strip.numPixels(); i++) {
             context.strip.setPixelColor(
-                i, Wheel(((i * 256 / context.strip.numPixels()) + j) & 255,
-                         context));
+                i, Wheel(((i * 256 / NUM_LEDS) + j) & 255, context));
         }
+
+        if (random(100) < args.chance_of_sparkle) {
+            context.strip.setPixelColor(random(0, NUM_LEDS), 255, 255, 255);
+        }
+
         context.strip.show();
-        delay(25);
+        delay(20);
     }
 }
 

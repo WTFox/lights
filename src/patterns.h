@@ -6,7 +6,6 @@
 struct PatternArgs {
     uint32_t primary_color;
     uint32_t sparkle_color;
-    bool with_sparkles = false;
     uint8_t chance_of_sparkle = 0;
 };
 
@@ -36,6 +35,5 @@ struct Color {
 #include "patterns/night_sky.h"
 #include "patterns/rainbow.h"
 #include "patterns/rainbow_confetti.h"
-#include "patterns/rainbow_glitter.h"
 
 #endif

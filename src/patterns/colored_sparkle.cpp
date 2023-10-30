@@ -10,7 +10,7 @@ void coloredSparkleLoop(GlobalContext &context, PatternArgs &args) {
         context.strip.setPixelColor(i, color.g, color.r, color.b);
     }
 
-    if (args.with_sparkles && randomInt() < args.chance_of_sparkle) {
+    if (randomInt() < args.chance_of_sparkle) {
         uint16_t lucky_pixel = random16(NUM_LEDS);
         context.strip.setPixelColor(lucky_pixel, sparkle_color.g,
                                     sparkle_color.r, sparkle_color.b);

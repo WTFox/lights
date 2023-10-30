@@ -19,28 +19,16 @@ GlobalContext context = {
 };
 
 Pattern patterns[] = {
-    // {
-    //     coloredSparkleSetup,
-    //     coloredSparkleLoop,
-    //     "coloredSparkle",
-    //     PatternArgs{
-    //         .primary_color = 0xff3300,
-    //         .sparkle_color = 0x00ff00,
-    //         .with_sparkles = true,
-    //         .chance_of_sparkle = 80,
-    //     },
-    // },
-    // {
-    //     coloredSparkleSetup,
-    //     coloredSparkleLoop,
-    //     "coloredSparkle2",
-    //     PatternArgs{
-    //         .primary_color = 0x0011ff,
-    //         .sparkle_color = 0xff00a6,
-    //         .with_sparkles = true,
-    //         .chance_of_sparkle = 80,
-    //     },
-    // },
+    {
+        coloredSparkleSetup,
+        coloredSparkleLoop,
+        "coloredSparkle",
+        PatternArgs{
+            .primary_color = 0xff3300,
+            .sparkle_color = 0x00ff00,
+            .chance_of_sparkle = 80,
+        },
+    },
     {
         coloredSparkleFadeSetup,
         coloredSparkleFadeLoop,
@@ -48,17 +36,52 @@ Pattern patterns[] = {
         PatternArgs{
             .primary_color = 0xff3300,
             .sparkle_color = 0x00ff00,
-            .with_sparkles = true,
             .chance_of_sparkle = 5,
         },
     },
-    // {fireplaceSetup, fireplaceLoop, "fireplace", {}},
-    // {rainbowWithGlitterSetup, rainbowWithGlitterLoop, "rainbowWithGlitter",
-    // {}}, {rainbowSetup, rainbowLoop, "rainbow", {}}, {nightSkySetup,
-    // nightSkyLoop, "nightSky", {}}, {cyberpunkCycleSetup, cyberpunkCycleLoop,
-    // "cyberpunkCycle", {}}, {festiveRainbowSetup, festiveRainbowLoop,
-    // "festiveRainbow", {}}, {christmasWaveSetup, christmasWaveLoop,
-    // "christmasWave", {}}, {lullabySetup, lullabyLoop, "lullaby", {}},
+    {
+        coloredSparkleSetup,
+        coloredSparkleLoop,
+        "coloredSparkle2",
+        PatternArgs{
+            .primary_color = 0x0011ff,
+            .sparkle_color = 0xff00a6,
+            .chance_of_sparkle = 80,
+        },
+    },
+    {
+        coloredSparkleFadeSetup,
+        coloredSparkleFadeLoop,
+        "coloredSparkleFade2",
+        PatternArgs{
+            .primary_color = 0x0011ff,
+            .sparkle_color = 0xff00a6,
+            .chance_of_sparkle = 5,
+        },
+    },
+    {fireplaceSetup, fireplaceLoop, "fireplace", {}},
+    {
+        rainbowSetup,
+        rainbowLoop,
+        "rainbow",
+        PatternArgs{
+            .chance_of_sparkle = 0,
+        },
+    },
+    {
+        rainbowSetup,
+        rainbowLoop,
+        "rainbow",
+        PatternArgs{
+            .sparkle_color = 0xffffff,
+            .chance_of_sparkle = 25,
+        },
+    },
+    {nightSkySetup, nightSkyLoop, "nightSky", {}},
+    //  {cyberpunkCycleSetup, cyberpunkCycleLoop, "cyberpunkCycle", {}},
+    // {festiveRainbowSetup, festiveRainbowLoop, "festiveRainbow", {}},
+    // {christmasWaveSetup, christmasWaveLoop, "christmasWave", {}},
+    // {lullabySetup, lullabyLoop, "lullaby", {}},
     // {rainbowConfettiSetup, rainbowConfettiLoop, "rainbowConfetti", {}},
     // {confettiSetup, confettiLoop, "confetti", {}},
 };
