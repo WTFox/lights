@@ -2,7 +2,7 @@
 #define COLORED_SPARKLE_FADE
 
 #include "global_context.h"
-#include "main_ino.h"
+#include "patterns.h"
 
 #define FADE_AMOUNT 5
 

@@ -2,7 +2,7 @@
 #define PATTERNS_COLORED_SPARKLE_H
 
 #include "global_context.h"
-#include "main_ino.h"
+#include "patterns.h"
 
 void coloredSparkleSetup(GlobalContext &context, PatternArgs &args);
 void coloredSparkleLoop(GlobalContext &context, PatternArgs &args);

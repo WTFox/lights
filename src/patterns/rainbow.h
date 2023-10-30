@@ -1,7 +1,7 @@
 #pragma once
 
 #include "global_context.h"
-#include "main_ino.h"
+#include "patterns.h"
 
 void rainbowSetup(GlobalContext &context, PatternArgs &args);
 void rainbowLoop(GlobalContext &context, PatternArgs &args);
