@@ -25,6 +25,7 @@ struct GlobalContext {
     Events::Type event_type = Events::Type::None;
     String currentPatternName;
     String currentTagFilter;
+    uint32_t alertColor;
 };
 
 #endif
