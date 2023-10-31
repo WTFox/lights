@@ -7,7 +7,7 @@ std::vector<Pattern> patterns = {
      PatternArgs{
          .primary_color = 0xff3300,
          .sparkle_color = 0x00ff00,
-         .chance_of_sparkle = 80,
+         .chance_of_sparkle = 70,
      },
      {"halloween"}},
     {coloredSparkleFadeSetup,
@@ -16,6 +16,15 @@ std::vector<Pattern> patterns = {
      PatternArgs{
          .primary_color = 0xff3300,
          .sparkle_color = 0x00ff00,
+         .chance_of_sparkle = 5,
+     },
+     {"halloween"}},
+    {coloredSparkleFadeSetup,
+     coloredSparkleFadeLoop,
+     "coloredSparkleFade",
+     PatternArgs{
+         .primary_color = 0x9000ff,
+         .sparkle_color = 0xff3300,
          .chance_of_sparkle = 5,
      },
      {"halloween"}},
@@ -158,9 +167,14 @@ int lookupPatternByName(String name) {
 }
 
 void setPattern(GlobalContext &context, int patternIndex) {
+    std::vector<Pattern> filtered_patterns =
+        filterPatternsByTag(patterns, context.currentTagFilter);
+
     context.currentPattern = patternIndex;
     context.iteration = 0;
     context.lastPatternChange = millis();
-    context.currentPatternName = patterns[patternIndex].name;
-    patterns[patternIndex].setupFunc(context, patterns[patternIndex].args);
+    context.currentPatternName = filtered_patterns[patternIndex].name;
+
+    filtered_patterns[patternIndex].setupFunc(
+        context, filtered_patterns[patternIndex].args);
 }

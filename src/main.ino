@@ -17,10 +17,10 @@ GlobalContext context = {
     .lastPatternChange = 0,
     .iteration = 0,
     .strip = Adafruit_NeoPixel(NUM_LEDS, PIXEL_PIN, PIXEL_TYPE),
-    .cyclePatterns = false,
+    .cyclePatterns = true,
     .nightModeActive = false,
     .currentPatternName = "",
-    .currentTagFilter = "",
+    .currentTagFilter = "halloween",
 };
 
 void setup() {
@@ -75,28 +75,17 @@ void loop() {
 }
 
 void handleNightMode(GlobalContext &context) {
-    String nightTimePattern = "nightSky";
-    if (Time.hour() >= 22 && !context.nightModeActive) {
+    bool isNightTime = (Time.hour() < 7 || Time.hour() >= 22);
+    if (isNightTime && !context.nightModeActive) {
         context.nightModeActive = true;
         context.currentTagFilter = "night";
         context.strip.setBrightness(context.nightTimeBrightness);
-        setPattern(context, lookupPatternByName(nightTimePattern));
-
-    } else if (Time.hour() < 7 && !context.nightModeActive) {
-        context.nightModeActive = true;
-        context.currentTagFilter = "night";
-        context.strip.setBrightness(context.nightTimeBrightness);
-        setPattern(context, lookupPatternByName(nightTimePattern));
-
-    } else if (Time.hour() >= 7 && context.nightModeActive) {
+        setPattern(context, 0);
+    } else if (!isNightTime && context.nightModeActive) {
         context.nightModeActive = false;
         context.currentTagFilter = "";
-        context.currentPattern = 0;
         context.strip.setBrightness(context.brightness);
         setPattern(context, context.currentPattern);
-
-    } else {
-        context.strip.setBrightness(context.brightness);
     }
 }
 
