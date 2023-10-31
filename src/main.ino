@@ -20,6 +20,7 @@ GlobalContext context = {
     .cyclePatterns = false,
     .nightModeActive = false,
     .currentPatternName = "",
+    .currentTagFilter = "",
 };
 
 void setup() {
@@ -30,6 +31,7 @@ void setup() {
     Particle.function("setBrightness", setBrightness);
     Particle.function("getNightTimeBrightness", getNightTimeBrightness);
     Particle.function("setNightTimeBrightness", setNightTimeBrightness);
+    Particle.function("setCurrentTagFilter", setCurrentTagFilter);
     Particle.function("nextPattern", gotoNextPattern);
     Particle.function("setPatternDurationMinutes", setPatternDurationMinutes);
     Particle.function("toggleCyclingPatterns", toggleCyclingPatterns);
@@ -39,7 +41,8 @@ void setup() {
     Particle.subscribe("alert", handleEvent);
 
     // published variables
-    Particle.variable("currentPattern", context.currentPatternName);
+    Particle.variable("currentPatternName", context.currentPatternName);
+    Particle.variable("currentTagFilter", context.currentTagFilter);
 
     // rest of setup
     context.strip.begin();
@@ -53,8 +56,12 @@ void loop() {
     handleEvents(context);
     handleNightMode(context);
 
-    patterns[context.currentPattern].loopFunc(
-        context, patterns[context.currentPattern].args);
+    std::vector<Pattern> filtered_patterns =
+        filterPatternsByTag(patterns, context.currentTagFilter);
+
+    filtered_patterns[context.currentPattern].loopFunc(
+        context, filtered_patterns[context.currentPattern].args);
+
     if (context.cyclePatterns) {
         if (millis() - context.lastPatternChange >=
             static_cast<unsigned long>(context.patternDurationInSeconds)) {
@@ -63,7 +70,7 @@ void loop() {
         }
     }
 
-    context.currentPatternName = patterns[context.currentPattern].name;
+    context.currentPatternName = filtered_patterns[context.currentPattern].name;
     context.iteration++;
 }
 
@@ -71,16 +78,20 @@ void handleNightMode(GlobalContext &context) {
     String nightTimePattern = "nightSky";
     if (Time.hour() >= 22 && !context.nightModeActive) {
         context.nightModeActive = true;
+        context.currentTagFilter = "night";
         context.strip.setBrightness(context.nightTimeBrightness);
         setPattern(context, lookupPatternByName(nightTimePattern));
 
     } else if (Time.hour() < 7 && !context.nightModeActive) {
         context.nightModeActive = true;
+        context.currentTagFilter = "night";
         context.strip.setBrightness(context.nightTimeBrightness);
         setPattern(context, lookupPatternByName(nightTimePattern));
 
     } else if (Time.hour() >= 7 && context.nightModeActive) {
         context.nightModeActive = false;
+        context.currentTagFilter = "";
+        context.currentPattern = 0;
         context.strip.setBrightness(context.brightness);
         setPattern(context, context.currentPattern);
 
@@ -164,10 +175,20 @@ void handleEvent(const char *event, const char *data) {
 }
 
 int gotoNextPattern(String command) {
+    std::vector<Pattern> filtered_patterns =
+        filterPatternsByTag(patterns, context.currentTagFilter);
+
     context.currentPattern =
-        (context.currentPattern + 1) % ARRAY_SIZE(patterns);
+        (context.currentPattern + 1) % filtered_patterns.size();
+
     patterns[context.currentPattern].setupFunc(
-        context, patterns[context.currentPattern].args);
+        context, filtered_patterns[context.currentPattern].args);
+
+    return 1;
+}
+
+int setCurrentTagFilter(String command) {
+    context.currentTagFilter = command;
     return 1;
 }
 // endregion

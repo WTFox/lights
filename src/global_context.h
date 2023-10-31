@@ -24,6 +24,7 @@ struct GlobalContext {
     unsigned long lastEventStart = 0;
     Events::Type event_type = Events::Type::None;
     String currentPatternName;
+    String currentTagFilter;
 };
 
 #endif

@@ -17,6 +17,7 @@ struct Pattern {
     void (*loopFunc)(GlobalContext &, PatternArgs &);
     String name;
     PatternArgs args;
+    std::vector<String> tags;
 };
 
 struct Color {
@@ -25,8 +26,9 @@ struct Color {
     Color(uint32_t value);
 };
 
-extern Pattern patterns[13];
-
+extern std::vector<Pattern> patterns;
+std::vector<Pattern> filterPatternsByTag(const std::vector<Pattern> &patterns,
+                                         const String &tag);
 int lookupPatternByName(String name);
 void setPattern(GlobalContext &context, int patternIndex);
 
