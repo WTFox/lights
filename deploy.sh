@@ -12,4 +12,4 @@ echo "Flashing to p2_1"
 particle flash p2_1 --target "5.5.0" .
 
 echo "Flashing to patio"
-particle flash patio --target "2.3.1" .
+particle flash patio --target "3.3.1" .
