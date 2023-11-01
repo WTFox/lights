@@ -26,6 +26,8 @@ struct GlobalContext {
     String currentPatternName;
     String currentTagFilter;
     uint32_t alertColor;
+    uint8_t nightTimeStart;
+    uint8_t nightTimeEnd;
 };
 
 #endif

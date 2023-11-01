@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAIN_H
+#define MAIN_H
 
 #include "patterns.h"
 
@@ -16,3 +17,5 @@
 
 uint8_t randomInt();
 uint16_t random16(uint16_t max);
+
+#endif
