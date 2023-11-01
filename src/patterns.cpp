@@ -161,11 +161,6 @@ std::vector<Pattern> filterPatternsByTag(const std::vector<Pattern> &patterns,
     return filteredPatterns;
 }
 
-Color::Color() : r(0), g(0), b(0) {}
-
-Color::Color(uint32_t value)
-    : r((value >> 16) & 0xFF), g((value >> 8) & 0xFF), b(value & 0xFF) {}
-
 int lookupPatternByName(String name) {
     for (int i = 0; i < patterns.size(); i++) {
         if (patterns[i].name == name) {
@@ -187,3 +182,8 @@ void setPattern(GlobalContext &context, int patternIndex) {
     filtered_patterns[patternIndex].setupFunc(
         context, filtered_patterns[patternIndex].args);
 }
+
+Color::Color() : r(0), g(0), b(0) {}
+
+Color::Color(uint32_t value)
+    : r((value >> 16) & 0xFF), g((value >> 8) & 0xFF), b(value & 0xFF) {}
