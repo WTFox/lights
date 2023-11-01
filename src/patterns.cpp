@@ -1,131 +1,140 @@
 #include "patterns.h"
 
 std::vector<Pattern> patterns = {
-    {coloredSparkleSetup,
-     coloredSparkleLoop,
-     "coloredSparkle",
-     PatternArgs{
-         .primary_color = 0xff3300,
-         .sparkle_color = 0x00ff00,
-         .chance_of_sparkle = 70,
-     },
-     {"halloween"}},
-    {coloredSparkleFadeSetup,
-     coloredSparkleFadeLoop,
-     "coloredSparkleFade",
-     PatternArgs{
-         .primary_color = 0xff3300,
-         .sparkle_color = 0x00ff00,
-         .chance_of_sparkle = 5,
-     },
-     {"halloween"}},
-    {coloredSparkleFadeSetup,
-     coloredSparkleFadeLoop,
-     "coloredSparkleFade",
-     PatternArgs{
-         .primary_color = 0x9000ff,
-         .sparkle_color = 0xff3300,
-         .chance_of_sparkle = 5,
-     },
-     {"halloween"}},
     {
-        coloredSparkleSetup,
-        coloredSparkleLoop,
-        "coloredSparkle2",
-        PatternArgs{
-            .primary_color = 0x0011ff,
-            .sparkle_color = 0xff00a6,
-            .chance_of_sparkle = 80,
-        },
-        {},
+        .name = "autumn sparkles",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff3300,
+                .sparkle_color = 0x00ff00,
+                .chance_of_sparkle = 70,
+            },
+        .tags = {"autumn", "fun"},
     },
     {
-        coloredSparkleFadeSetup,
-        coloredSparkleFadeLoop,
-        "coloredSparkleFade2",
-        PatternArgs{
-            .primary_color = 0x0011ff,
-            .sparkle_color = 0xff00a6,
-            .chance_of_sparkle = 5,
-        },
-        {},
+        .name = "coloredSparkleFade",
+        .setupFunc = coloredSparkleFadeSetup,
+        .loopFunc = coloredSparkleFadeLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff3300,
+                .sparkle_color = 0x00ff00,
+                .chance_of_sparkle = 5,
+            },
+        .tags = {"autumn"},
     },
     {
-        dynamicGlowSetup,
-        dynamicGlowLoop,
-        "fireplace",
-        PatternArgs{
-            .primary_color = 0xff5a00,
-            .intensity = 100,
-        },
-        {"halloween", "night"},
+        .name = "coloredSparkleFade",
+        .setupFunc = coloredSparkleFadeSetup,
+        .loopFunc = coloredSparkleFadeLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x9000ff,
+                .sparkle_color = 0xff3300,
+                .chance_of_sparkle = 5,
+            },
+        .tags = {"autumn", "fun"},
     },
     {
-        dynamicGlowSetup,
-        dynamicGlowLoop,
-        "arcReactor",
-        PatternArgs{
-            .primary_color = 0x0055ff,
-            .intensity = 100,
-        },
-        {},
+        .name = "coloredSparkle2",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff00a6,
+                .sparkle_color = 0x0011ff,
+                .chance_of_sparkle = 80,
+            },
+        .tags = {"fun"},
     },
     {
-        rainbowSetup,
-        rainbowLoop,
-        "rainbow",
-        PatternArgs{
-            .chance_of_sparkle = 0,
-        },
-        {},
+        .name = "coloredSparkleFade2",
+        .setupFunc = coloredSparkleFadeSetup,
+        .loopFunc = coloredSparkleFadeLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x0011ff,
+                .sparkle_color = 0xff00a6,
+                .chance_of_sparkle = 5,
+            },
+        .tags = {"fun"},
     },
     {
-        rainbowSetup,
-        rainbowLoop,
-        "rainbow",
-        PatternArgs{
-            .sparkle_color = 0xffffff,
-            .chance_of_sparkle = 25,
-        },
-        {},
+        .name = "fireplace",
+        .setupFunc = dynamicGlowSetup,
+        .loopFunc = dynamicGlowLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff5a00,
+                .intensity = 100,
+            },
+        .tags = {"autumn", "night", "fun"},
     },
     {
-        nightSkySetup,
-        nightSkyLoop,
-        "nightSky",
-        {},
-        {"night"},
+        .name = "arcReactor",
+        .setupFunc = dynamicGlowSetup,
+        .loopFunc = dynamicGlowLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x0055ff,
+                .intensity = 100,
+            },
+        .tags = {"night", "fun"},
     },
     {
-        lullabySetup,
-        lullabyLoop,
-        "lullaby",
-        {},
-        {"night"},
+        .name = "rainbow",
+        .setupFunc = rainbowSetup,
+        .loopFunc = rainbowLoop,
+        .args =
+            PatternArgs{
+                .chance_of_sparkle = 0,
+            },
+        .tags = {"fun"},
     },
     {
-        christmasRainbowSetup,
-        christmasRainbowLoop,
-        "christmasRainbow",
-        {},
-        {"christmas"},
+        .name = "rainbow sparkles",
+        .setupFunc = rainbowSetup,
+        .loopFunc = rainbowLoop,
+        .args =
+            PatternArgs{
+                .sparkle_color = 0xffffff,
+                .chance_of_sparkle = 25,
+            },
+        .tags = {"fun"},
     },
     {
-        christmasRainbowSetup,
-        christmasRainbowLoop,
-        "christmasRainbow",
-        PatternArgs{
-            .sparkle_color = 0xffffff,
-            .chance_of_sparkle = 25,
-        },
-        {"christmas"},
+        .name = "nightSky",
+        .setupFunc = nightSkySetup,
+        .loopFunc = nightSkyLoop,
+        .args = {},
+        .tags = {"night"},
     },
     {
-        christmasWaveSetup,
-        christmasWaveLoop,
-        "christmasWave",
-        {},
-        {"christmas"},
+        .name = "christmasRainbow",
+        .setupFunc = christmasRainbowSetup,
+        .loopFunc = christmasRainbowLoop,
+        .args = {},
+        .tags = {"christmas"},
+    },
+    {
+        .name = "christmasRainbow sparkles",
+        .setupFunc = christmasRainbowSetup,
+        .loopFunc = christmasRainbowLoop,
+        .args =
+            PatternArgs{
+                .sparkle_color = 0xffffff,
+                .chance_of_sparkle = 25,
+            },
+        .tags = {"christmas"},
+    },
+    {
+        .name = "christmasWave",
+        .setupFunc = christmasWaveSetup,
+        .loopFunc = christmasWaveLoop,
+        .args = {},
+        .tags = {"christmas"},
     },
 };
 

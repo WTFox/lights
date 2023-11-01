@@ -1,8 +1,7 @@
 #include "main_ino.h"
 
 #define PIXEL_TYPE WS2812B
-#if (PLATFORM_ID == 32)
-// Photon2
+#if (PLATFORM_ID == PLATFORM_P2)
 #define PIXEL_PIN SPI1
 #else
 #define PIXEL_PIN D5
@@ -10,7 +9,7 @@
 
 GlobalContext context = {
     .brightness = 150,
-    .nightTimeBrightness = 25,
+    .nightTimeBrightness = 15,
     .alertBrightness = 255,
     .currentPattern = 0,
     .patternDurationInSeconds = 15 * 60 * 1000,
@@ -20,9 +19,10 @@ GlobalContext context = {
     .cyclePatterns = true,
     .nightModeActive = false,
     .currentPatternName = "",
-    .currentTagFilter = "halloween",
-    // rgb but it's actually grb
-    .alertColor = 0x00ff00,
+    .currentTagFilter = "fun",
+    .alertColor = 0xff0000,
+    .nightTimeStart = 22,
+    .nightTimeEnd = 7,
 };
 
 String oldFilterTag = "";
@@ -65,7 +65,7 @@ void loop() {
     handleNightMode(context);
 
     int brightness =
-        isNightTime() ? context.nightTimeBrightness : context.brightness;
+        isNightTime(context) ? context.nightTimeBrightness : context.brightness;
     context.strip.setBrightness(brightness);
 
     std::vector<Pattern> filtered_patterns =
@@ -87,12 +87,12 @@ void loop() {
 }
 
 void handleNightMode(GlobalContext &context) {
-    if (isNightTime() && !context.nightModeActive) {
+    if (isNightTime(context) && !context.nightModeActive) {
         context.nightModeActive = true;
         oldFilterTag = context.currentTagFilter;
         context.currentTagFilter = "night";
         setPattern(context, 0);
-    } else if (!isNightTime() && context.nightModeActive) {
+    } else if (!isNightTime(context) && context.nightModeActive) {
         context.nightModeActive = false;
         context.currentTagFilter = oldFilterTag;
         setPattern(context, 0);
@@ -102,8 +102,12 @@ void handleNightMode(GlobalContext &context) {
 void alertLoop(GlobalContext &context) {
     context.strip.setBrightness(context.alertBrightness);
 
+    uint8_t r = (context.alertColor >> 16) & 0xff;
+    uint8_t g = (context.alertColor >> 8) & 0xff;
+    uint8_t b = context.alertColor & 0xff;
+
     for (int i = 0; i < NUM_LEDS; i++) {
-        context.strip.setPixelColor(i, context.alertColor);
+        context.strip.setPixelColor(i, g, r, b);
     }
     context.strip.show();
     delay(500);
@@ -165,19 +169,31 @@ int toggleCyclingPatterns(String command) {
 int triggerAlertEvent(String command) {
     context.event_type = Events::Type::Alert;
     context.lastEventStart = millis();
+
+    if (command.length() > 0) {
+        context.alertColor = strtoul(command.c_str(), NULL, 16);
+    } else {
+        context.alertColor = 0xff0000;
+    }
+
     return 1;
 }
 
 void handleEvent(const char *event, const char *data) {
-    if (isNightTime()) {
+    if (isNightTime(context)) {
         // we don't want to alert at night time
         return;
     }
 
     if (strcmp(event, "alert") == 0) {
         context.event_type = Events::Type::Alert;
-        context.alertColor = strtol(data, NULL, 16);
         context.lastEventStart = millis();
+
+        if (data != NULL) {
+            context.alertColor = strtoul(data, NULL, 16);
+        } else {
+            context.alertColor = 0xff0000;
+        }
     }
     return;
 }
@@ -201,6 +217,10 @@ int setCurrentTagFilter(String command) {
 }
 // endregion
 
-bool isNightTime() { return (Time.hour() < 7 || Time.hour() >= 22); }
+bool isNightTime(GlobalContext &context) {
+    return (Time.hour() >= context.nightTimeStart ||
+            Time.hour() < context.nightTimeEnd);
+}
+
 uint8_t randomInt() { return rand() % 101; }
 uint16_t random16(uint16_t max) { return rand() % max; }

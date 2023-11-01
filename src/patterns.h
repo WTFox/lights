@@ -13,9 +13,9 @@ struct PatternArgs {
 typedef void (*PatternFunction)();
 
 struct Pattern {
+    String name;
     void (*setupFunc)(GlobalContext &, PatternArgs &);
     void (*loopFunc)(GlobalContext &, PatternArgs &);
-    String name;
     PatternArgs args;
     std::vector<String> tags;
 };
