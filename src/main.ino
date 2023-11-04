@@ -22,7 +22,7 @@ GlobalContext context = {
     .currentTagFilter = "autumn",
     .alertColor = 0xff0000,
     .nightTimeStart = 22,
-    .nightTimeEnd = 7,
+    .nightTimeEnd = 8,
 };
 
 String oldFilterTag = "";
