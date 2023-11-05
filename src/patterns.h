@@ -24,6 +24,8 @@ struct Color {
     uint8_t r, g, b;
     Color();
     Color(uint32_t value);
+    static Color blend(const Color &color1, const Color &color2, int alpha);
+    uint32_t toGRB() const;
 };
 
 extern std::vector<Pattern> patterns;

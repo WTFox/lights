@@ -22,7 +22,7 @@ GlobalContext context = {
     .currentTagFilter = "autumn",
     .alertColor = 0xff0000,
     .nightTimeStart = 22,
-    .nightTimeEnd = 7,
+    .nightTimeEnd = 8,
 };
 
 String oldFilterTag = "";
@@ -43,6 +43,7 @@ void setup() {
 
     // events subscribed to
     Particle.subscribe("alert", handleEvent);
+    Particle.subscribe("setPatternTag", handleEvent);
 
     // published variables
     Particle.variable("currentPatternName", context.currentPatternName);
@@ -180,21 +181,25 @@ int triggerAlertEvent(String command) {
 }
 
 void handleEvent(const char *event, const char *data) {
-    if (isNightTime(context)) {
-        // we don't want to alert at night time
-        return;
-    }
 
     if (strcmp(event, "alert") == 0) {
+        if (isNightTime(context)) {
+            // we don't want to alert at night time
+            return;
+        }
+
         context.event_type = Events::Type::Alert;
         context.lastEventStart = millis();
-
         if (data != NULL) {
             context.alertColor = strtoul(data, NULL, 16);
         } else {
             context.alertColor = 0xff0000;
         }
+    } else if (strcmp(event, "setPatternTag") == 0) {
+        context.currentTagFilter = data;
+        setPattern(context, 0);
     }
+
     return;
 }
 
