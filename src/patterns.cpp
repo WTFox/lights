@@ -187,3 +187,17 @@ Color::Color() : r(0), g(0), b(0) {}
 
 Color::Color(uint32_t value)
     : r((value >> 16) & 0xFF), g((value >> 8) & 0xFF), b(value & 0xFF) {}
+
+uint32_t Color::toGRB() const {
+    return (static_cast<uint32_t>(g) << 16) | // Green first
+           (static_cast<uint32_t>(r) << 8) |  // Then red
+           static_cast<uint32_t>(b);          // Finally blue
+}
+
+Color Color::blend(const Color &color1, const Color &color2, int alpha) {
+    Color blendedColor;
+    blendedColor.r = (color1.r * (255 - alpha) + color2.r * alpha) / 255;
+    blendedColor.g = (color1.g * (255 - alpha) + color2.g * alpha) / 255;
+    blendedColor.b = (color1.b * (255 - alpha) + color2.b * alpha) / 255;
+    return blendedColor;
+}
