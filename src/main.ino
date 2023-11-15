@@ -9,7 +9,7 @@
 
 GlobalContext context = {
     .brightness = 150,
-    .nightTimeBrightness = 15,
+    .nightTimeBrightness = 10,
     .alertBrightness = 255,
     .currentPattern = 0,
     .patternDurationInSeconds = 15 * 60 * 1000,

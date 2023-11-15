@@ -14,6 +14,18 @@ std::vector<Pattern> patterns = {
         .tags = {"autumn", "fun"},
     },
     {
+        .name = "autumn sparkles",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff3300,
+                .sparkle_color = 0x000000,
+                .chance_of_sparkle = 70,
+            },
+        .tags = {"autumn", "fun"},
+    },
+    {
         .name = "coloredSparkleFade",
         .setupFunc = coloredSparkleFadeSetup,
         .loopFunc = coloredSparkleFadeLoop,
@@ -81,7 +93,7 @@ std::vector<Pattern> patterns = {
                 .primary_color = 0x0055ff,
                 .intensity = 100,
             },
-        .tags = {"night", "fun"},
+        .tags = {"fun"},
     },
     {
         .name = "rainbow",
