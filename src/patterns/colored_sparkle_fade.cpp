@@ -13,7 +13,7 @@ void coloredSparkleFadeSetup(GlobalContext &context, PatternArgs &args) {
 
 void coloredSparkleFadeLoop(GlobalContext &context, PatternArgs &args) {
     Color primaryColor = Color(args.primary_color);
-    Color secondaryColor = Color(args.sparkle_color);
+    Color secondaryColor = Color(args.secondary_color);
 
     for (int i = 0; i < context.strip.numPixels(); i++) {
         if (fadeDirection[i] == 0 && random(100) < args.chance_of_sparkle) {

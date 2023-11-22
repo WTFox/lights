@@ -30,11 +30,10 @@ void christmasWaveLoop(GlobalContext &context, PatternArgs &args) {
             context.strip.setPixelColor(i, context.strip.Color(g, r, b));
         } else {
             // White in the middle of the wave
-            /* uint8_t r = 255; */
-            /* uint8_t g = 255; */
-            /* uint8_t b = 255; */
-            /* context.strip.setPixelColor(i, context.strip.Color(g, r, b)); */
-            context.strip.setPixelColor(i, Color(0xff5a00).toGRB());
+            uint8_t r = 255;
+            uint8_t g = 255;
+            uint8_t b = 255;
+            context.strip.setPixelColor(i, context.strip.Color(g, r, b));
         }
     }
 
