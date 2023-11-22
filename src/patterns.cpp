@@ -11,19 +11,43 @@ std::vector<Pattern> patterns = {
                 .sparkle_color = 0x00ff00,
                 .chance_of_sparkle = 70,
             },
-        .tags = {"autumn", "fun"},
+        .tags = {"autumn"},
     },
     {
-        .name = "autumn sparkles",
+        .name = "christmas sparkles",
         .setupFunc = coloredSparkleSetup,
         .loopFunc = coloredSparkleLoop,
         .args =
             PatternArgs{
-                .primary_color = 0xff3300,
-                .sparkle_color = 0x000000,
-                .chance_of_sparkle = 70,
+                .primary_color = 0xff0000,
+                .sparkle_color = 0x00ff00,
+                .chance_of_sparkle = 85,
             },
-        .tags = {"autumn", "fun"},
+        .tags = {"christmas"},
+    },
+    {
+        .name = "red blinks",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x000000,
+                .sparkle_color = 0xff0000,
+                .chance_of_sparkle = 95,
+            },
+        .tags = {"christmas"},
+    },
+    {
+        .name = "green blinks",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x000000,
+                .sparkle_color = 0x00ff00,
+                .chance_of_sparkle = 95,
+            },
+        .tags = {"christmas"},
     },
     {
         .name = "coloredSparkleFade",
@@ -48,6 +72,18 @@ std::vector<Pattern> patterns = {
                 .chance_of_sparkle = 5,
             },
         .tags = {"autumn", "fun"},
+    },
+    {
+        .name = "coloredSparkleFade",
+        .setupFunc = coloredSparkleFadeSetup,
+        .loopFunc = coloredSparkleFadeLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff0000,
+                .sparkle_color = 0xFF5A00,
+                .chance_of_sparkle = 5,
+            },
+        .tags = {"autumn"},
     },
     {
         .name = "coloredSparkle2",
@@ -79,10 +115,10 @@ std::vector<Pattern> patterns = {
         .loopFunc = dynamicGlowLoop,
         .args =
             PatternArgs{
-                .primary_color = 0xff5a00,
+                .primary_color = 0xff5A00,
                 .intensity = 100,
             },
-        .tags = {"autumn", "night", "fun"},
+        .tags = {"autumn", "christmas", "night", "fun"},
     },
     {
         .name = "arcReactor",
@@ -103,7 +139,7 @@ std::vector<Pattern> patterns = {
             PatternArgs{
                 .chance_of_sparkle = 0,
             },
-        .tags = {"fun"},
+        .tags = {"fun", "christmas"},
     },
     {
         .name = "rainbow sparkles",
@@ -114,7 +150,7 @@ std::vector<Pattern> patterns = {
                 .sparkle_color = 0xffffff,
                 .chance_of_sparkle = 25,
             },
-        .tags = {"fun"},
+        .tags = {"fun", "christmas"},
     },
     {
         .name = "nightSky",

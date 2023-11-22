@@ -8,6 +8,7 @@ struct PatternArgs {
     uint32_t sparkle_color;
     uint8_t chance_of_sparkle = 0;
     uint8_t intensity = 0;
+    uint8_t delay = 0;
 };
 
 typedef void (*PatternFunction)();
