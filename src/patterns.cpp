@@ -50,18 +50,6 @@ std::vector<Pattern> patterns = {
         .tags = {"christmas"},
     },
     {
-        .name = "CandyCane",
-        .setupFunc = candycaneSetup,
-        .loopFunc = candycaneLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x000000,
-                .secondary_color = 0xff0000,
-                .delay = 500,
-            },
-        .tags = {"christmas"}, //  TODO: add night
-    },
-    {
         .name = "red blinks",
         .setupFunc = coloredSparkleSetup,
         .loopFunc = coloredSparkleLoop,
@@ -80,7 +68,7 @@ std::vector<Pattern> patterns = {
         .args =
             PatternArgs{
                 .primary_color = 0x000000,
-                .secondary_color = 0x00ff00,
+                .secondary_color = 0xff0000,
                 .delay = 500,
             },
         .tags = {"christmas"}, //  TODO: add night
@@ -96,6 +84,18 @@ std::vector<Pattern> patterns = {
                 .chance_of_sparkle = 95,
             },
         .tags = {"christmas"},
+    },
+    {
+        .name = "CandyCane",
+        .setupFunc = candycaneSetup,
+        .loopFunc = candycaneLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0x000000,
+                .secondary_color = 0x00ff00,
+                .delay = 500,
+            },
+        .tags = {"christmas"}, //  TODO: add night
     },
     {
         .name = "coloredSparkleFade",

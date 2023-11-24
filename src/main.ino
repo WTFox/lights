@@ -19,9 +19,9 @@ GlobalContext context = {
     .cyclePatterns = true,
     .nightModeActive = false,
     .currentPatternName = "",
-    .currentTagFilter = "autumn",
+    .currentTagFilter = "christmas",
     .alertColor = 0xff0000,
-    .nightTimeStart = 22,
+    .nightTimeStart = 23,
     .nightTimeEnd = 8,
 };
 
