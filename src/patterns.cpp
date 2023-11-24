@@ -71,7 +71,7 @@ std::vector<Pattern> patterns = {
                 .secondary_color = 0xff0000,
                 .delay = 500,
             },
-        .tags = {"christmas"}, //  TODO: add night
+        .tags = {"christmas", "night"},
     },
     {
         .name = "green blinks",
@@ -95,7 +95,7 @@ std::vector<Pattern> patterns = {
                 .secondary_color = 0x00ff00,
                 .delay = 500,
             },
-        .tags = {"christmas"}, //  TODO: add night
+        .tags = {"christmas", "night"},
     },
     {
         .name = "coloredSparkleFade",
