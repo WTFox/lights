@@ -19,16 +19,21 @@ GlobalContext context = {
     .cyclePatterns = true,
     .nightModeActive = false,
     .currentPatternName = "",
-    .currentTagFilter = "christmas",
+    .currentTagFilter = "fun",
     .alertColor = 0xff0000,
-    .nightTimeStart = 23,
-    .nightTimeEnd = 8,
+    .nightTimeStart = 22, // 10pm
+    .nightTimeEnd = 7,    // 7am
 };
 
 String oldFilterTag = "";
+String currentTime;
 
 void setup() {
-    Time.zone(-7);
+    currentTime = Time.timeStr();
+
+    Time.zone(-8);   // PST
+    Time.beginDST(); // this is not updated automatically.
+    // Time.endDST();
 
     // published functions
     Particle.function("getBrightness", getBrightness);
@@ -48,6 +53,7 @@ void setup() {
     // published variables
     Particle.variable("currentPatternName", context.currentPatternName);
     Particle.variable("currentTagFilter", context.currentTagFilter);
+    Particle.variable("time", currentTime);
 
     // rest of setup
     context.strip.begin();
@@ -58,6 +64,8 @@ void setup() {
 }
 
 void loop() {
+    currentTime = Time.timeStr();
+
     if (context.event_type != Events::Type::None) {
         handleEvents(context);
         return;
