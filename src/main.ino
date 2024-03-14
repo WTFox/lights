@@ -8,7 +8,7 @@
 #endif
 
 GlobalContext context = {
-    .brightness = 150,
+    .brightness = 125,
     .nightTimeBrightness = 10,
     .alertBrightness = 255,
     .currentPattern = 0,

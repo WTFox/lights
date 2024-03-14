@@ -2,114 +2,6 @@
 
 std::vector<Pattern> patterns = {
     {
-        .name = "CandyCane",
-        .setupFunc = candycaneSetup,
-        .loopFunc = candycaneLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff0000,
-                .secondary_color = 0xffffff,
-                .delay = 500,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "CandyCane",
-        .setupFunc = candycaneSetup,
-        .loopFunc = candycaneLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff0000,
-                .secondary_color = 0x00ff00,
-                .delay = 500,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "autumn sparkles",
-        .setupFunc = coloredSparkleSetup,
-        .loopFunc = coloredSparkleLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff3300,
-                .secondary_color = 0x00ff00,
-                .chance_of_sparkle = 70,
-            },
-        .tags = {"autumn"},
-    },
-    {
-        .name = "christmas sparkles",
-        .setupFunc = coloredSparkleSetup,
-        .loopFunc = coloredSparkleLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff0000,
-                .secondary_color = 0x00ff00,
-                .chance_of_sparkle = 85,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "red blinks",
-        .setupFunc = coloredSparkleSetup,
-        .loopFunc = coloredSparkleLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x000000,
-                .secondary_color = 0xff0000,
-                .chance_of_sparkle = 95,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "CandyCane",
-        .setupFunc = candycaneSetup,
-        .loopFunc = candycaneLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x000000,
-                .secondary_color = 0xff0000,
-                .delay = 500,
-            },
-        .tags = {"christmas", "night"},
-    },
-    {
-        .name = "green blinks",
-        .setupFunc = coloredSparkleSetup,
-        .loopFunc = coloredSparkleLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x000000,
-                .secondary_color = 0x00ff00,
-                .chance_of_sparkle = 95,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "CandyCane",
-        .setupFunc = candycaneSetup,
-        .loopFunc = candycaneLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x000000,
-                .secondary_color = 0x00ff00,
-                .delay = 500,
-            },
-        .tags = {"christmas", "night"},
-    },
-    {
-        .name = "coloredSparkleFade",
-        .setupFunc = coloredSparkleFadeSetup,
-        .loopFunc = coloredSparkleFadeLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff3300,
-                .secondary_color = 0x00ff00,
-                .chance_of_sparkle = 5,
-            },
-        .tags = {"autumn"},
-    },
-    {
         .name = "coloredSparkleFade",
         .setupFunc = coloredSparkleFadeSetup,
         .loopFunc = coloredSparkleFadeLoop,
@@ -134,18 +26,6 @@ std::vector<Pattern> patterns = {
         .tags = {"autumn", "night"},
     },
     {
-        .name = "coloredSparkle2",
-        .setupFunc = coloredSparkleSetup,
-        .loopFunc = coloredSparkleLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff00a6,
-                .secondary_color = 0x0011ff,
-                .chance_of_sparkle = 80,
-            },
-        .tags = {"fun"},
-    },
-    {
         .name = "coloredSparkleFade2",
         .setupFunc = coloredSparkleFadeSetup,
         .loopFunc = coloredSparkleFadeLoop,
@@ -167,17 +47,6 @@ std::vector<Pattern> patterns = {
                 .intensity = 100,
             },
         .tags = {"autumn", "christmas", "night", "fun"},
-    },
-    {
-        .name = "arcReactor",
-        .setupFunc = dynamicGlowSetup,
-        .loopFunc = dynamicGlowLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0x0055ff,
-                .intensity = 100,
-            },
-        .tags = {"fun"},
     },
     {
         .name = "rainbow",
@@ -207,31 +76,162 @@ std::vector<Pattern> patterns = {
         .args = {},
         .tags = {"night"},
     },
-    {
-        .name = "christmasRainbow",
-        .setupFunc = christmasRainbowSetup,
-        .loopFunc = christmasRainbowLoop,
-        .args = {},
-        .tags = {"christmas"},
-    },
-    {
-        .name = "christmasRainbow sparkles",
-        .setupFunc = christmasRainbowSetup,
-        .loopFunc = christmasRainbowLoop,
-        .args =
-            PatternArgs{
-                .secondary_color = 0xffffff,
-                .chance_of_sparkle = 25,
-            },
-        .tags = {"christmas"},
-    },
-    {
-        .name = "christmasWave",
-        .setupFunc = christmasWaveSetup,
-        .loopFunc = christmasWaveLoop,
-        .args = {},
-        .tags = {"christmas"},
-    },
+    // {
+    //     .name = "christmasRainbow",
+    //     .setupFunc = christmasRainbowSetup,
+    //     .loopFunc = christmasRainbowLoop,
+    //     .args = {},
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "christmasRainbow sparkles",
+    //     .setupFunc = christmasRainbowSetup,
+    //     .loopFunc = christmasRainbowLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .secondary_color = 0xffffff,
+    //             .chance_of_sparkle = 25,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "christmasWave",
+    //     .setupFunc = christmasWaveSetup,
+    //     .loopFunc = christmasWaveLoop,
+    //     .args = {},
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "arcReactor",
+    //     .setupFunc = dynamicGlowSetup,
+    //     .loopFunc = dynamicGlowLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0x0055ff,
+    //             .intensity = 100,
+    //         },
+    //     .tags = {"fun"},
+    // },
+    // {
+    //     .name = "coloredSparkle2",
+    //     .setupFunc = coloredSparkleSetup,
+    //     .loopFunc = coloredSparkleLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff00a6,
+    //             .secondary_color = 0x0011ff,
+    //             .chance_of_sparkle = 80,
+    //         },
+    //     .tags = {"fun"},
+    // },
+    // {
+    //     .name = "CandyCane",
+    //     .setupFunc = candycaneSetup,
+    //     .loopFunc = candycaneLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff0000,
+    //             .secondary_color = 0xffffff,
+    //             .delay = 500,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "CandyCane",
+    //     .setupFunc = candycaneSetup,
+    //     .loopFunc = candycaneLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff0000,
+    //             .secondary_color = 0x00ff00,
+    //             .delay = 500,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "autumn sparkles",
+    //     .setupFunc = coloredSparkleSetup,
+    //     .loopFunc = coloredSparkleLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff3300,
+    //             .secondary_color = 0x00ff00,
+    //             .chance_of_sparkle = 70,
+    //         },
+    //     .tags = {"autumn"},
+    // },
+    // {
+    //     .name = "christmas sparkles",
+    //     .setupFunc = coloredSparkleSetup,
+    //     .loopFunc = coloredSparkleLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff0000,
+    //             .secondary_color = 0x00ff00,
+    //             .chance_of_sparkle = 85,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "red blinks",
+    //     .setupFunc = coloredSparkleSetup,
+    //     .loopFunc = coloredSparkleLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0x000000,
+    //             .secondary_color = 0xff0000,
+    //             .chance_of_sparkle = 95,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "CandyCane",
+    //     .setupFunc = candycaneSetup,
+    //     .loopFunc = candycaneLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0x000000,
+    //             .secondary_color = 0xff0000,
+    //             .delay = 500,
+    //         },
+    //     .tags = {"christmas", "night"},
+    // },
+    // {
+    //     .name = "green blinks",
+    //     .setupFunc = coloredSparkleSetup,
+    //     .loopFunc = coloredSparkleLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0x000000,
+    //             .secondary_color = 0x00ff00,
+    //             .chance_of_sparkle = 95,
+    //         },
+    //     .tags = {"christmas"},
+    // },
+    // {
+    //     .name = "CandyCane",
+    //     .setupFunc = candycaneSetup,
+    //     .loopFunc = candycaneLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0x000000,
+    //             .secondary_color = 0x00ff00,
+    //             .delay = 500,
+    //         },
+    //     .tags = {"christmas", "night"},
+    // },
+    // {
+    //     .name = "coloredSparkleFade",
+    //     .setupFunc = coloredSparkleFadeSetup,
+    //     .loopFunc = coloredSparkleFadeLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff3300,
+    //             .secondary_color = 0x00ff00,
+    //             .chance_of_sparkle = 5,
+    //         },
+    //     .tags = {"autumn"},
+    // },
 };
 
 std::vector<Pattern> filterPatternsByTag(const std::vector<Pattern> &patterns,
