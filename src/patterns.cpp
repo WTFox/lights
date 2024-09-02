@@ -2,16 +2,26 @@
 
 std::vector<Pattern> patterns = {
     {
-        .name = "coloredSparkleFade",
-        .setupFunc = coloredSparkleFadeSetup,
-        .loopFunc = coloredSparkleFadeLoop,
+        .name = "fireplace-darker",
+        .setupFunc = dynamicGlowSetup,
+        .loopFunc = dynamicGlowLoop,
         .args =
             PatternArgs{
-                .primary_color = 0x9000ff,
-                .secondary_color = 0xff3300,
-                .chance_of_sparkle = 5,
+                .primary_color = 0xff3a00,
+                .intensity = 100,
             },
-        .tags = {"autumn", "fun"},
+        .tags = {"autumn", "christmas", "night", "fun"},
+    },
+    {
+        .name = "fireplace",
+        .setupFunc = dynamicGlowSetup,
+        .loopFunc = dynamicGlowLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff5A00,
+                .intensity = 100,
+            },
+        .tags = {"autumn", "christmas", "night", "fun"},
     },
     {
         .name = "coloredSparkleFade",
@@ -26,48 +36,28 @@ std::vector<Pattern> patterns = {
         .tags = {"autumn", "night"},
     },
     {
-        .name = "coloredSparkleFade2",
+        .name = "autumn sparkles",
+        .setupFunc = coloredSparkleSetup,
+        .loopFunc = coloredSparkleLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff3300,
+                .secondary_color = 0xaa00ff,
+                .chance_of_sparkle = 70,
+            },
+        .tags = {"autumn"},
+    },
+    {
+        .name = "coloredSparkleFade",
         .setupFunc = coloredSparkleFadeSetup,
         .loopFunc = coloredSparkleFadeLoop,
         .args =
             PatternArgs{
-                .primary_color = 0x0011ff,
-                .secondary_color = 0xff00a6,
+                .primary_color = 0x9000ff,
+                .secondary_color = 0xff3300,
                 .chance_of_sparkle = 5,
             },
-        .tags = {"fun"},
-    },
-    {
-        .name = "fireplace",
-        .setupFunc = dynamicGlowSetup,
-        .loopFunc = dynamicGlowLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff5A00,
-                .intensity = 100,
-            },
-        .tags = {"autumn", "christmas", "night", "fun"},
-    },
-    {
-        .name = "rainbow",
-        .setupFunc = rainbowSetup,
-        .loopFunc = rainbowLoop,
-        .args =
-            PatternArgs{
-                .chance_of_sparkle = 0,
-            },
-        .tags = {"fun", "christmas"},
-    },
-    {
-        .name = "rainbow sparkles",
-        .setupFunc = rainbowSetup,
-        .loopFunc = rainbowLoop,
-        .args =
-            PatternArgs{
-                .secondary_color = 0xffffff,
-                .chance_of_sparkle = 25,
-            },
-        .tags = {"fun", "christmas"},
+        .tags = {"autumn", "fun"},
     },
     {
         .name = "nightSky",
@@ -76,6 +66,39 @@ std::vector<Pattern> patterns = {
         .args = {},
         .tags = {"night"},
     },
+    // {
+    //     .name = "coloredSparkleFade",
+    //     .setupFunc = coloredSparkleFadeSetup,
+    //     .loopFunc = coloredSparkleFadeLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff3300,
+    //             .secondary_color = 0x00ff00,
+    //             .chance_of_sparkle = 5,
+    //         },
+    //     .tags = {"autumn"},
+    // },
+    // {
+    //     .name = "rainbow",
+    //     .setupFunc = rainbowSetup,
+    //     .loopFunc = rainbowLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .chance_of_sparkle = 0,
+    //         },
+    //     .tags = {"fun", "christmas"},
+    // },
+    // {
+    //     .name = "rainbow sparkles",
+    //     .setupFunc = rainbowSetup,
+    //     .loopFunc = rainbowLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .secondary_color = 0xffffff,
+    //             .chance_of_sparkle = 25,
+    //         },
+    //     .tags = {"fun", "christmas"},
+    // },
     // {
     //     .name = "christmasRainbow",
     //     .setupFunc = christmasRainbowSetup,
@@ -149,18 +172,6 @@ std::vector<Pattern> patterns = {
     //     .tags = {"christmas"},
     // },
     // {
-    //     .name = "autumn sparkles",
-    //     .setupFunc = coloredSparkleSetup,
-    //     .loopFunc = coloredSparkleLoop,
-    //     .args =
-    //         PatternArgs{
-    //             .primary_color = 0xff3300,
-    //             .secondary_color = 0x00ff00,
-    //             .chance_of_sparkle = 70,
-    //         },
-    //     .tags = {"autumn"},
-    // },
-    // {
     //     .name = "christmas sparkles",
     //     .setupFunc = coloredSparkleSetup,
     //     .loopFunc = coloredSparkleLoop,
@@ -221,16 +232,16 @@ std::vector<Pattern> patterns = {
     //     .tags = {"christmas", "night"},
     // },
     // {
-    //     .name = "coloredSparkleFade",
+    //     .name = "coloredSparkleFade2",
     //     .setupFunc = coloredSparkleFadeSetup,
     //     .loopFunc = coloredSparkleFadeLoop,
     //     .args =
     //         PatternArgs{
-    //             .primary_color = 0xff3300,
-    //             .secondary_color = 0x00ff00,
+    //             .primary_color = 0x0011ff,
+    //             .secondary_color = 0xff00a6,
     //             .chance_of_sparkle = 5,
     //         },
-    //     .tags = {"autumn"},
+    //     .tags = {"fun"},
     // },
 };
 
