@@ -12,17 +12,17 @@ std::vector<Pattern> patterns = {
             },
         .tags = {"autumn", "christmas", "night", "fun"},
     },
-    {
-        .name = "fireplace",
-        .setupFunc = dynamicGlowSetup,
-        .loopFunc = dynamicGlowLoop,
-        .args =
-            PatternArgs{
-                .primary_color = 0xff5A00,
-                .intensity = 100,
-            },
-        .tags = {"autumn", "christmas", "night", "fun"},
-    },
+    // {
+    //     .name = "fireplace",
+    //     .setupFunc = dynamicGlowSetup,
+    //     .loopFunc = dynamicGlowLoop,
+    //     .args =
+    //         PatternArgs{
+    //             .primary_color = 0xff5A00,
+    //             .intensity = 100,
+    //         },
+    //     .tags = {"autumn", "christmas", "night", "fun"},
+    // },
     {
         .name = "coloredSparkleFade",
         .setupFunc = coloredSparkleFadeSetup,
@@ -33,7 +33,7 @@ std::vector<Pattern> patterns = {
                 .secondary_color = 0xFF5A00,
                 .chance_of_sparkle = 5,
             },
-        .tags = {"autumn", "night"},
+        .tags = {"fun", "autumn", "night", "christmas"},
     },
     {
         .name = "autumn sparkles",
@@ -158,7 +158,7 @@ std::vector<Pattern> patterns = {
     //             .delay = 500,
     //         },
     //     .tags = {"christmas"},
-    // },
+    // }
     // {
     //     .name = "CandyCane",
     //     .setupFunc = candycaneSetup,

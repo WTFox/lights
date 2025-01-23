@@ -19,7 +19,7 @@ GlobalContext context = {
     .cyclePatterns = true,
     .nightModeActive = false,
     .currentPatternName = "",
-    .currentTagFilter = "autumn",
+    .currentTagFilter = "fun",
     .alertColor = 0xff0000,
     .nightTimeStart = 22, // 10pm
     .nightTimeEnd = 7,    // 7am
@@ -33,7 +33,7 @@ void setup() {
 
     Time.zone(-8);   // PST
     Time.beginDST(); // this is not updated automatically.
-    // Time.endDST();
+    Time.endDST();
 
     // published functions
     Particle.function("getBrightness", getBrightness);
