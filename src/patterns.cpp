@@ -2,6 +2,18 @@
 
 std::vector<Pattern> patterns = {
     {
+        .name = "meteor",
+        .setupFunc = meteorRainSetup,
+        .loopFunc = meteorRainLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff0000, 
+                .secondary_color = 0xff3a00,  
+                .chance_of_sparkle = 20,    
+            },
+        .tags = {"fun", "night", "lunar"},
+    },
+    {
         .name = "lunarFestival",
         .setupFunc = lunarFestivalSetup,
         .loopFunc = lunarFestivalLoop,
@@ -77,7 +89,7 @@ std::vector<Pattern> patterns = {
         .loopFunc = nightSkyLoop,
         .args = {},
         .tags = {"night"},
-    }
+    },
     // {
     //     .name = "coloredSparkleFade",
     //     .setupFunc = coloredSparkleFadeSetup,

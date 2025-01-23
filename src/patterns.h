@@ -43,6 +43,7 @@ void setPattern(GlobalContext &context, int patternIndex);
 #include "patterns/dynamic_glow.h"
 #include "patterns/lullaby.h"
 #include "patterns/lunar_festival.h"
+#include "patterns/meteor_rain.h"
 #include "patterns/night_sky.h"
 #include "patterns/rainbow.h"
 
