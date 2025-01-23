@@ -2,6 +2,18 @@
 
 std::vector<Pattern> patterns = {
     {
+        .name = "lunarFestival",
+        .setupFunc = lunarFestivalSetup,
+        .loopFunc = lunarFestivalLoop,
+        .args =
+            PatternArgs{
+                .primary_color = 0xff0000,
+                .secondary_color = 0xFF5A00,
+                .chance_of_sparkle = 0,
+            },
+        .tags = {"fun", "lunar", "night"},
+    },
+    {
         .name = "fireplace-darker",
         .setupFunc = dynamicGlowSetup,
         .loopFunc = dynamicGlowLoop,
@@ -10,7 +22,7 @@ std::vector<Pattern> patterns = {
                 .primary_color = 0xff3a00,
                 .intensity = 100,
             },
-        .tags = {"autumn", "christmas", "night", "fun"},
+        .tags = {"autumn", "christmas", "night", "fun", "lunar"},
     },
     // {
     //     .name = "fireplace",
@@ -33,7 +45,7 @@ std::vector<Pattern> patterns = {
                 .secondary_color = 0xFF5A00,
                 .chance_of_sparkle = 5,
             },
-        .tags = {"fun", "autumn", "night", "christmas"},
+        .tags = {"fun", "autumn", "night", "christmas", "lunar"},
     },
     {
         .name = "autumn sparkles",
@@ -65,7 +77,7 @@ std::vector<Pattern> patterns = {
         .loopFunc = nightSkyLoop,
         .args = {},
         .tags = {"night"},
-    },
+    }
     // {
     //     .name = "coloredSparkleFade",
     //     .setupFunc = coloredSparkleFadeSetup,
